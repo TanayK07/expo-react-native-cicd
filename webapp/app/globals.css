@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--font-sans: sans-serif;
+	--font-mono: monospace;
+
+	--background: #ffffff;
+	--foreground: #171717;
+	--card-bg: #ffffff;
+	--card-border: #e1e4e8;
+	--github-bg: #f6f8fa;
+	--github-border: #e1e4e8;
+	--github-text: #24292e;
+	--primary-light: #0ea5e9;
+	--primary-dark: #0284c7;
+	--success: #2ea44f;
+}
+
+.dark {
+	--background: #0a0a0a;
+	--foreground: #ededed;
+	--card-bg: #1e1e1e;
+	--card-border: #333333;
+	--github-bg: #0d1117;
+	--github-border: #30363d;
+	--github-text: #c9d1d9;
+	--primary-light: #38bdf8;
+	--primary-dark: #0369a1;
+	--success: #238636;
+}
+
+/* Ensure the body takes full width */
+html,
+body {
+	min-height: 100%;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	color: var(--foreground);
+	background: var(--background);
+	font-family: Arial, Helvetica, sans-serif;
+	overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Extra responsive classes */
+@media (min-width: 1536px) {
+	.container {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+}
+
+@media (min-width: 1920px) {
+	.container {
+		padding-left: 4rem;
+		padding-right: 4rem;
+	}
+}
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+	background: #1e1e1e;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: #444;
+	border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Support smooth transitions when switching between light and dark modes */
+* {
+	transition-property:
+		color, background-color, border-color, text-decoration-color, fill, stroke;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 150ms;
+}
