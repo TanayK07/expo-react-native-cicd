@@ -1,0 +1,735 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateWorkflowYaml — snapshots matches snapshot for full config (all triggers, all builds, zoho-drive, all tests) 1`] = `
+"name: React Native CI/CD
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+      - "docs/**"
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      buildType:
+        type: choice
+        description: "Build type to run"
+        options:
+          - dev
+          - prod-apk
+          - prod-aab
+          - all
+
+env:
+  EXPO_TOKEN: \${{ secrets.EXPO_TOKEN }}
+  RCLONE_CONFIG_ZOHODRIVE_TYPE: \${{ secrets.RCLONE_CONFIG_ZOHODRIVE_TYPE }}
+  RCLONE_CONFIG_ZOHODRIVE_TOKEN: \${{ secrets.RCLONE_CONFIG_ZOHODRIVE_TOKEN }}
+  RCLONE_CONFIG_ZOHODRIVE_DRIVE_ID: \${{ secrets.RCLONE_CONFIG_ZOHODRIVE_DRIVE_ID }}
+  NODE_OPTIONS: --openssl-legacy-provider
+
+jobs:
+  check-skip:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Skip CI check
+        run: echo "Proceeding with workflow"
+
+  test:
+    needs: check-skip
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: 📦 Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: 📦 Setup yarn cache
+        uses: actions/cache@v3
+        with:
+          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            \${{ runner.os }}-yarn-
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🧪 Run TypeScript check
+        run: yarn tsc
+
+      - name: 🧹 Run ESLint
+        run: yarn lint
+
+      - name: 🎨 Run Prettier check
+        run: yarn format:check
+
+      - name: 🧪 Run Jest Tests
+        run: yarn test
+
+  build-and-deploy:
+    needs: test
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: 📦 Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: 📦 Setup yarn cache
+        uses: actions/cache@v3
+        with:
+          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            \${{ runner.os }}-yarn-
+
+      - name: 📦 Install dependencies
+        run: |
+          yarn install
+          yarn global add eas-cli@latest
+
+      - name: 📱 Setup EAS build cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.eas-build-local
+          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            \${{ runner.os }}-eas-build-local-
+
+      - name: 🔄 Verify EAS CLI installation
+        run: |
+          echo "EAS CLI version:"
+          eas --version
+
+      - name: 📋 Fix package.json main entry
+        run: |
+          # Check if jq is installed, if not install it
+          if ! command -v jq &> /dev/null; then
+            echo "Installing jq..."
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+          # Fix the main entry in package.json
+          if [ -f ./package.json ]; then
+            # Create a backup
+            cp package.json package.json.bak
+            # Update the package.json
+            jq '.main = "node_modules/expo/AppEntry.js"' package.json > package.json.tmp && mv package.json.tmp package.json
+            echo "Updated package.json main entry"
+            cat package.json | grep "main"
+          else
+            echo "package.json not found"
+            exit 1
+          fi
+
+      - name: 📋 Update metro.config.js for SVG support
+        run: |
+          if [ -f ./metro.config.js ]; then
+            echo "Creating backup of metro.config.js"
+            cp ./metro.config.js ./metro.config.js.backup
+            echo "Updating metro.config.js to CommonJS format"
+            cat > ./metro.config.js << 'EOFMARKER'
+          /* eslint-disable @typescript-eslint/no-var-requires */
+          const { getDefaultConfig } = require('expo/metro-config');
+
+          const config = getDefaultConfig(__dirname);
+
+          const { transformer, resolver } = config;
+
+          config.transformer = {
+            ...transformer,
+            babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
+          };
+
+          config.resolver = {
+            ...resolver,
+            assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+            sourceExts: [...resolver.sourceExts, 'svg'],
+          };
+
+          module.exports = config;
+          EOFMARKER
+            echo "metro.config.js updated to CommonJS format"
+          else
+            echo "metro.config.js not found"
+          fi
+
+      - name: 📱 Build Development APK
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push'
+        run: |
+          # Build with increased memory limit
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile development --local --non-interactive --output=./app-dev.apk
+        env:
+          NODE_ENV: development
+
+      - name: 📱 Build Production APK
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-apk' || github.event_name == 'push'
+        run: |
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile production-apk --local --non-interactive --output=./app-prod.apk
+        env:
+          NODE_ENV: production
+
+      - name: 📱 Build Production AAB
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-aab' || github.event_name == 'push'
+        run: |
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile production --local --non-interactive --output=./app-prod.aab
+        env:
+          NODE_ENV: production
+
+      - name: 🏗 Setup rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          version: latest
+
+      - name: 📤 Configure rclone
+        run: |
+          # Clean up any existing rclone config
+          rm -rf ~/.config/rclone
+
+          # Create rclone config directory
+          mkdir -p ~/.config/rclone
+
+          # Create rclone config file matching your existing configuration structure
+          cat > ~/.config/rclone/rclone.conf << EOF
+          [zohodrive]
+          type = \${RCLONE_CONFIG_ZOHODRIVE_TYPE}
+          region = com
+          token = \${RCLONE_CONFIG_ZOHODRIVE_TOKEN}
+          root_folder_id = \${RCLONE_CONFIG_ZOHODRIVE_DRIVE_ID}
+          EOF
+
+          # Set proper permissions
+          chmod 600 ~/.config/rclone/rclone.conf
+
+          # Test configuration
+          echo "Testing rclone configuration..."
+          rclone ls zohodrive: --max-depth 1
+
+      - name: 📤 Upload Development APK to Zoho Drive
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push'
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          # Create directory first
+          echo "Creating folder: $FOLDER_PATH"
+          rclone mkdir "zohodrive:$FOLDER_PATH"
+
+          # Copy APK file
+          echo "Uploading development APK..."
+          rclone copy ./app-dev.apk "zohodrive:$FOLDER_PATH/app-dev-$VERSION-$BUILD_NUMBER.apk" -v
+
+      - name: 📤 Upload Production APK to Zoho Drive
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-apk' || github.event_name == 'push'
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          echo "Uploading production APK..."
+          rclone copy ./app-prod.apk "zohodrive:$FOLDER_PATH/app-prod-$VERSION-$BUILD_NUMBER.apk" -v
+
+      - name: 📤 Upload Production AAB to Zoho Drive
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-aab' || github.event_name == 'push'
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          echo "Uploading production AAB..."
+          rclone copy ./app-prod.aab "zohodrive:$FOLDER_PATH/app-prod-$VERSION-$BUILD_NUMBER.aab" -v
+
+      - name: 📦 Upload build artifacts to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-builds
+          path: |
+            ./app-dev.apk
+            ./app-prod.apk
+            ./app-prod.aab
+          retention-days: 7
+"
+`;
+
+exports[`generateWorkflowYaml — snapshots matches snapshot for iOS + google-drive config 1`] = `
+"name: React Native CI/CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildType:
+        type: choice
+        description: "Build type to run"
+        options:
+          - dev
+          - prod-aab
+          - ios-dev
+          - ios-prod
+          - all
+      platform:
+        type: choice
+        description: "Platform to build"
+        default: "all"
+        options:
+          - android
+          - ios
+          - all
+
+env:
+  EXPO_TOKEN: \${{ secrets.EXPO_TOKEN }}
+  EXPO_APPLE_ID: \${{ secrets.EXPO_APPLE_ID }}
+  EXPO_APPLE_PASSWORD: \${{ secrets.EXPO_APPLE_PASSWORD }}
+  EXPO_TEAM_ID: \${{ secrets.EXPO_TEAM_ID }}
+  RCLONE_CONFIG_GDRIVE_TYPE: \${{ secrets.RCLONE_CONFIG_GDRIVE_TYPE }}
+  RCLONE_CONFIG_GDRIVE_TOKEN: \${{ secrets.RCLONE_CONFIG_GDRIVE_TOKEN }}
+  RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID: \${{ secrets.RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID }}
+  NODE_OPTIONS: --openssl-legacy-provider
+
+jobs:
+  check-skip:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Skip CI check
+        run: echo "Proceeding with workflow"
+
+  test:
+    needs: check-skip
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: 📦 Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: 📦 Setup yarn cache
+        uses: actions/cache@v3
+        with:
+          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            \${{ runner.os }}-yarn-
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🧪 Run TypeScript check
+        run: yarn tsc
+
+  build-and-deploy:
+    needs: test
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) || github.event_name == 'workflow_dispatch'
+    strategy:
+      matrix:
+        platform: [android]
+        include:
+          - platform: ios
+            runs-on: macos-latest
+    runs-on: \${{ matrix.platform == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: 📦 Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: 📦 Setup yarn cache
+        uses: actions/cache@v3
+        with:
+          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            \${{ runner.os }}-yarn-
+
+      - name: 📦 Install dependencies
+        run: |
+          yarn install
+          yarn global add eas-cli@latest
+
+      - name: 📱 Setup EAS build cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.eas-build-local
+          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            \${{ runner.os }}-eas-build-local-
+
+      - name: 🔄 Verify EAS CLI installation
+        run: |
+          echo "EAS CLI version:"
+          eas --version
+
+      - name: 📋 Fix package.json main entry
+        run: |
+          # Check if jq is installed, if not install it
+          if ! command -v jq &> /dev/null; then
+            echo "Installing jq..."
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+          # Fix the main entry in package.json
+          if [ -f ./package.json ]; then
+            # Create a backup
+            cp package.json package.json.bak
+            # Update the package.json
+            jq '.main = "node_modules/expo/AppEntry.js"' package.json > package.json.tmp && mv package.json.tmp package.json
+            echo "Updated package.json main entry"
+            cat package.json | grep "main"
+          else
+            echo "package.json not found"
+            exit 1
+          fi
+
+      - name: 📋 Update metro.config.js for SVG support
+        run: |
+          if [ -f ./metro.config.js ]; then
+            echo "Creating backup of metro.config.js"
+            cp ./metro.config.js ./metro.config.js.backup
+            echo "Updating metro.config.js to CommonJS format"
+            cat > ./metro.config.js << 'EOFMARKER'
+          /* eslint-disable @typescript-eslint/no-var-requires */
+          const { getDefaultConfig } = require('expo/metro-config');
+
+          const config = getDefaultConfig(__dirname);
+
+          const { transformer, resolver } = config;
+
+          config.transformer = {
+            ...transformer,
+            babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
+          };
+
+          config.resolver = {
+            ...resolver,
+            assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+            sourceExts: [...resolver.sourceExts, 'svg'],
+          };
+
+          module.exports = config;
+          EOFMARKER
+            echo "metro.config.js updated to CommonJS format"
+          else
+            echo "metro.config.js not found"
+          fi
+
+      - name: 📱 Build Development APK
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push' && (matrix.platform == 'android' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')
+        run: |
+          # Build with increased memory limit
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile development --local --non-interactive --output=./app-dev.apk
+        env:
+          NODE_ENV: development
+
+      - name: 📱 Build Production AAB
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-aab' || github.event_name == 'push' && (matrix.platform == 'android' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')
+        run: |
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile production --local --non-interactive --output=./app-prod.aab
+        env:
+          NODE_ENV: production
+
+      - name: 📱 Build iOS Development
+        if: (github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'ios-dev') && (matrix.platform == 'ios' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')
+        run: |
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform ios --profile development --local --non-interactive --output=./app-ios-dev.app
+        env:
+          NODE_ENV: development
+
+      - name: 📱 Build iOS Production
+        if: (github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'ios-prod') && (matrix.platform == 'ios' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')
+        run: |
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform ios --profile production --local --non-interactive --output=./app-ios-prod.ipa
+        env:
+          NODE_ENV: production
+
+      - name: 🏗 Setup rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          version: latest
+
+      - name: 📤 Configure rclone
+        run: |
+          # Clean up any existing rclone config
+          rm -rf ~/.config/rclone
+
+          # Create rclone config directory
+          mkdir -p ~/.config/rclone
+
+          # Create rclone config file for Google Drive
+          cat > ~/.config/rclone/rclone.conf << EOF
+          [gdrive]
+          type = \${RCLONE_CONFIG_GDRIVE_TYPE}
+          token = \${RCLONE_CONFIG_GDRIVE_TOKEN}
+          root_folder_id = \${RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID}
+          EOF
+
+          # Set proper permissions
+          chmod 600 ~/.config/rclone/rclone.conf
+
+          # Test configuration
+          echo "Testing rclone configuration..."
+          rclone ls gdrive: --max-depth 1
+
+      - name: 📤 Upload Development APK to Google Drive
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push' && (matrix.platform == 'android' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          # Create directory first
+          echo "Creating folder: $FOLDER_PATH"
+          rclone mkdir "gdrive:$FOLDER_PATH"
+
+          # Copy APK file
+          echo "Uploading development APK..."
+          rclone copy ./app-dev.apk "gdrive:$FOLDER_PATH/app-dev-$VERSION-$BUILD_NUMBER.apk" -v
+
+      - name: 📤 Upload Production AAB to Google Drive
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-aab' || github.event_name == 'push' && (matrix.platform == 'android' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android')
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          echo "Uploading production AAB..."
+          rclone copy ./app-prod.aab "gdrive:$FOLDER_PATH/app-prod-$VERSION-$BUILD_NUMBER.aab" -v
+
+      - name: 📤 Upload iOS Development App to Google Drive
+        if: (github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'ios-dev') && (matrix.platform == 'ios' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          # Create directory first if it doesn't exist
+          echo "Creating folder: $FOLDER_PATH"
+          rclone mkdir "gdrive:$FOLDER_PATH"
+
+          # Copy App file
+          echo "Uploading iOS development app..."
+          rclone copy ./app-ios-dev.app "gdrive:$FOLDER_PATH/app-ios-dev-$VERSION-$BUILD_NUMBER.app" -v
+
+      - name: 📤 Upload iOS Production IPA to Google Drive
+        if: (github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'ios-prod') && (matrix.platform == 'ios' || github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios')
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          FOLDER_PATH="App Builds/$VERSION-$BUILD_NUMBER"
+
+          # Create directory first if it doesn't exist
+          echo "Creating folder: $FOLDER_PATH"
+          rclone mkdir "gdrive:$FOLDER_PATH"
+
+          # Copy IPA file
+          echo "Uploading iOS production IPA..."
+          rclone copy ./app-ios-prod.ipa "gdrive:$FOLDER_PATH/app-ios-prod-$VERSION-$BUILD_NUMBER.ipa" -v
+
+      - name: 📦 Upload build artifacts to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-builds
+          path: |
+            ./app-dev.apk
+            ./app-prod.aab
+            ./app-ios-dev.app
+            ./app-ios-prod.ipa
+          retention-days: 7
+"
+`;
+
+exports[`generateWorkflowYaml — snapshots matches snapshot for minimal config (push-main, dev APK, github-release) 1`] = `
+"name: React Native CI/CD
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+      - "docs/**"
+
+env:
+  EXPO_TOKEN: \${{ secrets.EXPO_TOKEN }}
+  NODE_OPTIONS: --openssl-legacy-provider
+
+jobs:
+  check-skip:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Skip CI check
+        run: echo "Proceeding with workflow"
+
+  build-and-release:
+    needs: check-skip
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')) || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: 📦 Install dependencies
+        run: |
+          yarn install
+          yarn global add eas-cli@latest
+
+      - name: 📱 Setup EAS build cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.eas-build-local
+          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            \${{ runner.os }}-eas-build-local-
+
+      - name: 🔄 Verify EAS CLI installation
+        run: |
+          echo "EAS CLI version:"
+          eas --version
+
+      - name: 📋 Fix package.json main entry
+        run: |
+          # Check if jq is installed, if not install it
+          if ! command -v jq &> /dev/null; then
+            echo "Installing jq..."
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+          # Fix the main entry in package.json
+          if [ -f ./package.json ]; then
+            # Create a backup
+            cp package.json package.json.bak
+            # Update the package.json
+            jq '.main = "node_modules/expo/AppEntry.js"' package.json > package.json.tmp && mv package.json.tmp package.json
+            echo "Updated package.json main entry"
+            cat package.json | grep "main"
+          else
+            echo "package.json not found"
+            exit 1
+          fi
+
+      - name: 📋 Update metro.config.js for SVG support
+        run: |
+          if [ -f ./metro.config.js ]; then
+            echo "Creating backup of metro.config.js"
+            cp ./metro.config.js ./metro.config.js.backup
+            echo "Updating metro.config.js to CommonJS format"
+            cat > ./metro.config.js << 'EOFMARKER'
+          /* eslint-disable @typescript-eslint/no-var-requires */
+          const { getDefaultConfig } = require('expo/metro-config');
+
+          const config = getDefaultConfig(__dirname);
+
+          const { transformer, resolver } = config;
+
+          config.transformer = {
+            ...transformer,
+            babelTransformerPath: require.resolve('react-native-svg-transformer/expo'),
+          };
+
+          config.resolver = {
+            ...resolver,
+            assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+            sourceExts: [...resolver.sourceExts, 'svg'],
+          };
+
+          module.exports = config;
+          EOFMARKER
+            echo "metro.config.js updated to CommonJS format"
+          else
+            echo "metro.config.js not found"
+          fi
+
+      - name: 📱 Build Development APK
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push'
+        run: |
+          # Build with increased memory limit
+          export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
+          eas build --platform android --profile development --local --non-interactive --output=./app-dev.apk
+        env:
+          NODE_ENV: development
+
+      - name: 🏷️ Generate build information
+        id: build-info
+        run: |
+          VERSION=$(node -p "require('./app.json').expo.version")
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          # Generate changelog from commit messages since last tag
+          if git describe --tags --abbrev=0 > /dev/null 2>&1; then
+            LAST_TAG=$(git describe --tags --abbrev=0)
+            git log $LAST_TAG..HEAD --pretty=format:"- %s" > changelog.md
+          else
+            git log --pretty=format:"- %s" -n 10 > changelog.md
+          fi
+
+      - name: 📝 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          name: "Release v\${{ steps.build-info.outputs.version }}-\${{ steps.build-info.outputs.build_number }}"
+          tag_name: "v\${{ steps.build-info.outputs.version }}-\${{ steps.build-info.outputs.build_number }}"
+          files: |
+            ./app-dev.apk
+          body_path: changelog.md
+        env:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+      - name: 📦 Upload build artifacts to GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-builds
+          path: |
+            ./app-dev.apk
+          retention-days: 7
+"
+`;
