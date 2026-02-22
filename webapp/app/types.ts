@@ -14,6 +14,7 @@ export interface AdvancedOptions {
 export interface FormValues {
   projectName?: string;
   expoVersion?: string;
+  packageManager?: "yarn" | "npm";
   storageType?: string;
   platform?: string;
   buildType?: string;
@@ -50,6 +51,7 @@ export interface WorkflowFormProps {
 export interface FormValuesTest {
   projectName: string;
   expoVersion: string;
+  packageManager?: "yarn" | "npm";
   storageType: "github-release" | "zoho-drive" | "google-drive" | "custom";
   platform: "android" | "ios";
   buildType: "dev" | "prod-apk" | "prod-aab";

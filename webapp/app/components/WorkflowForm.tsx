@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
   const [formState, setFormState] = useState({
+    packageManager: "yarn" as "yarn" | "npm",
     storageType: "github",
     buildTypes: ["dev", "prod-apk", "prod-aab"],
     tests: ["typescript", "eslint", "prettier"],
@@ -37,6 +38,7 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
   }, [
     formState.buildTypes,
     formState.triggers,
+    formState.packageManager,
     formState.storageType,
     formState.advancedOptions,
     formState.showAdvancedOptions,
@@ -297,6 +299,39 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
           <p className="text-xs italic text-gray-600 dark:text-gray-400">
             GitHub Releases requires the "Manual workflow dispatch" trigger
             option.
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <label
+          htmlFor="package-manager"
+          className="block font-medium text-gray-700 dark:text-gray-300"
+        >
+          Which package manager does your project use?
+        </label>
+        <select
+          id="package-manager"
+          name="package-manager"
+          value={formState.packageManager}
+          onChange={(e) =>
+            setFormState({
+              ...formState,
+              packageManager: e.target.value as "yarn" | "npm",
+            })
+          }
+          className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500"
+        >
+          <option value="yarn">Yarn</option>
+          <option value="npm">npm</option>
+        </select>
+        {formState.packageManager === "npm" && (
+          <p className="text-xs italic text-gray-600 dark:text-gray-400">
+            Make sure your project has a{" "}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+              package-lock.json
+            </code>{" "}
+            file committed to your repository for caching to work correctly.
           </p>
         )}
       </div>
