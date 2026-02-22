@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+      - "docs/**"
+      - "examples/**"
+  pull_request:
+    branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+      - "docs/**"
+      - "examples/**"
+
+jobs:
+  lint-and-test:
+    name: Lint, Type-check & Test (webapp)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: webapp/yarn.lock
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 🔷 TypeScript type-check
+        run: yarn type-check
+
+      - name: 🧹 ESLint
+        run: yarn lint
+
+      - name: 🎨 Prettier format check
+        run: yarn prettier:check
+
+      - name: 🧪 Run tests with coverage
+        run: yarn test --coverage --ci
+
+      - name: 📊 Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: webapp/coverage/
+          retention-days: 7
