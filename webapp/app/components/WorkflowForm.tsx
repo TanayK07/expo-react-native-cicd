@@ -20,7 +20,7 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
       renderHookTests: false,
       caching: true,
       notifications: false,
-      notificationType: 'both',
+      notificationType: "both",
     } as AdvancedOptions,
     showAdvancedOptions: false,
   });
@@ -758,7 +758,10 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
                     name="notification-type"
                     value={formState.advancedOptions.notificationType || "both"}
                     onChange={(e) => {
-                      const value = e.target.value as "slack" | "discord" | "both";
+                      const value = e.target.value as
+                        | "slack"
+                        | "discord"
+                        | "both";
                       setFormState((prev) => ({
                         ...prev,
                         advancedOptions: {
@@ -785,7 +788,8 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
                     {(!formState.advancedOptions.notificationType ||
                       formState.advancedOptions.notificationType === "both") &&
                       " and "}
-                    {(formState.advancedOptions.notificationType === "discord" ||
+                    {(formState.advancedOptions.notificationType ===
+                      "discord" ||
                       formState.advancedOptions.notificationType === "both" ||
                       !formState.advancedOptions.notificationType) && (
                       <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">

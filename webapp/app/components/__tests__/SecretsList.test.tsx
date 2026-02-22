@@ -155,7 +155,11 @@ describe("SecretsList — notification secrets", () => {
     render(
       <SecretsList
         storageType="github-release"
-        advancedOptions={{ ...defaultOptions, notifications: true, notificationType: 'both' }}
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "both",
+        }}
       />,
     );
     expect(screen.getByText("SLACK_WEBHOOK")).toBeInTheDocument();
@@ -177,7 +181,11 @@ describe("SecretsList — notification secrets", () => {
     render(
       <SecretsList
         storageType="github-release"
-        advancedOptions={{ ...defaultOptions, notifications: true, notificationType: 'slack' }}
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "slack",
+        }}
       />,
     );
     expect(screen.getByText("SLACK_WEBHOOK")).toBeInTheDocument();
@@ -188,7 +196,11 @@ describe("SecretsList — notification secrets", () => {
     render(
       <SecretsList
         storageType="github-release"
-        advancedOptions={{ ...defaultOptions, notifications: true, notificationType: 'discord' }}
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "discord",
+        }}
       />,
     );
     expect(screen.queryByText("SLACK_WEBHOOK")).not.toBeInTheDocument();

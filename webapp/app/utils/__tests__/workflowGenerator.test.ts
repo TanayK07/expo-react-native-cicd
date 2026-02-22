@@ -469,7 +469,11 @@ describe("generateWorkflowYaml — advanced options", () => {
   it("includes Slack notification steps when notificationType is slack", () => {
     const yaml = generateWorkflowYaml(
       makeForm({
-        advancedOptions: { ...defaultAdvancedOptions, notifications: true, notificationType: 'slack' },
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "slack",
+        },
       }),
     );
     expect(yaml).toContain("SLACK_WEBHOOK:");
@@ -481,7 +485,11 @@ describe("generateWorkflowYaml — advanced options", () => {
   it("includes Discord notification steps when notificationType is discord", () => {
     const yaml = generateWorkflowYaml(
       makeForm({
-        advancedOptions: { ...defaultAdvancedOptions, notifications: true, notificationType: 'discord' },
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "discord",
+        },
       }),
     );
     expect(yaml).toContain("DISCORD_WEBHOOK:");
@@ -493,7 +501,11 @@ describe("generateWorkflowYaml — advanced options", () => {
   it("includes both Slack and Discord when notificationType is both", () => {
     const yaml = generateWorkflowYaml(
       makeForm({
-        advancedOptions: { ...defaultAdvancedOptions, notifications: true, notificationType: 'both' },
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "both",
+        },
       }),
     );
     expect(yaml).toContain("SLACK_WEBHOOK:");

@@ -548,7 +548,7 @@ describe("Step validity: every step has `uses` XOR `run`", () => {
         advancedOptions: {
           ...DEFAULT_ADVANCED,
           notifications: true,
-          notificationType: 'discord' as const,
+          notificationType: "discord" as const,
         },
       },
     },
@@ -562,7 +562,7 @@ describe("Step validity: every step has `uses` XOR `run`", () => {
         advancedOptions: {
           ...DEFAULT_ADVANCED,
           notifications: true,
-          notificationType: 'slack' as const,
+          notificationType: "slack" as const,
           jestTests: true,
         },
       },
@@ -701,7 +701,11 @@ describe("Env vars: correct secrets injected per storageType", () => {
       buildTypes: ["dev"],
       tests: [],
       triggers: ["push-main"],
-      advancedOptions: { ...DEFAULT_ADVANCED, notifications: true, notificationType: 'slack' },
+      advancedOptions: {
+        ...DEFAULT_ADVANCED,
+        notifications: true,
+        notificationType: "slack",
+      },
     });
     const { parsed } = parseAndValidate(yamlStr);
     expect(parsed.env).toHaveProperty("SLACK_WEBHOOK");
@@ -714,7 +718,11 @@ describe("Env vars: correct secrets injected per storageType", () => {
       buildTypes: ["dev"],
       tests: [],
       triggers: ["push-main"],
-      advancedOptions: { ...DEFAULT_ADVANCED, notifications: true, notificationType: 'discord' },
+      advancedOptions: {
+        ...DEFAULT_ADVANCED,
+        notifications: true,
+        notificationType: "discord",
+      },
     });
     const { parsed } = parseAndValidate(yamlStr);
     expect(parsed.env).not.toHaveProperty("SLACK_WEBHOOK");
@@ -958,10 +966,22 @@ describe("Advanced options permutations: YAML + GHA validity", () => {
     opts: Partial<AdvancedOptions>;
   }> = [
     { label: "caching=false", opts: { caching: false } },
-    { label: "notifications=true (default both)", opts: { notifications: true } },
-    { label: "notifications=true, notificationType=slack", opts: { notifications: true, notificationType: 'slack' as const } },
-    { label: "notifications=true, notificationType=discord", opts: { notifications: true, notificationType: 'discord' as const } },
-    { label: "notifications=true, notificationType=both", opts: { notifications: true, notificationType: 'both' as const } },
+    {
+      label: "notifications=true (default both)",
+      opts: { notifications: true },
+    },
+    {
+      label: "notifications=true, notificationType=slack",
+      opts: { notifications: true, notificationType: "slack" as const },
+    },
+    {
+      label: "notifications=true, notificationType=discord",
+      opts: { notifications: true, notificationType: "discord" as const },
+    },
+    {
+      label: "notifications=true, notificationType=both",
+      opts: { notifications: true, notificationType: "both" as const },
+    },
     { label: "jestTests=true", opts: { jestTests: true } },
     {
       label: "jestTests+rntlTests=true",

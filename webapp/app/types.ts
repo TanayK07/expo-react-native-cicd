@@ -8,7 +8,7 @@ export interface AdvancedOptions {
   renderHookTests: boolean;
   caching: boolean;
   notifications: boolean;
-  notificationType?: 'slack' | 'discord' | 'both';
+  notificationType?: "slack" | "discord" | "both";
 }
 
 export interface FormValues {
