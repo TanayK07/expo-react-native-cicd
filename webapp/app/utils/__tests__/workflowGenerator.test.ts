@@ -466,14 +466,64 @@ describe("generateWorkflowYaml — advanced options", () => {
     expect(yaml).not.toContain("Setup yarn cache");
   });
 
-  it("includes Slack notification steps when notifications is true", () => {
+  it("includes Slack notification steps when notificationType is slack", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "slack",
+        },
+      }),
+    );
+    expect(yaml).toContain("SLACK_WEBHOOK:");
+    expect(yaml).toContain("rtCamp/action-slack-notify");
+    expect(yaml).not.toContain("DISCORD_WEBHOOK:");
+    expect(yaml).not.toContain("Ilshidur/action-discord");
+  });
+
+  it("includes Discord notification steps when notificationType is discord", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "discord",
+        },
+      }),
+    );
+    expect(yaml).toContain("DISCORD_WEBHOOK:");
+    expect(yaml).toContain("Ilshidur/action-discord@0.3.2");
+    expect(yaml).not.toContain("SLACK_WEBHOOK:");
+    expect(yaml).not.toContain("rtCamp/action-slack-notify");
+  });
+
+  it("includes both Slack and Discord when notificationType is both", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          notifications: true,
+          notificationType: "both",
+        },
+      }),
+    );
+    expect(yaml).toContain("SLACK_WEBHOOK:");
+    expect(yaml).toContain("DISCORD_WEBHOOK:");
+    expect(yaml).toContain("rtCamp/action-slack-notify");
+    expect(yaml).toContain("Ilshidur/action-discord@0.3.2");
+  });
+
+  it("defaults to both when notificationType is undefined", () => {
     const yaml = generateWorkflowYaml(
       makeForm({
         advancedOptions: { ...defaultAdvancedOptions, notifications: true },
       }),
     );
     expect(yaml).toContain("SLACK_WEBHOOK:");
+    expect(yaml).toContain("DISCORD_WEBHOOK:");
     expect(yaml).toContain("rtCamp/action-slack-notify");
+    expect(yaml).toContain("Ilshidur/action-discord@0.3.2");
   });
 
   it("does NOT include notification steps when notifications is false", () => {
@@ -483,6 +533,7 @@ describe("generateWorkflowYaml — advanced options", () => {
       }),
     );
     expect(yaml).not.toContain("rtCamp/action-slack-notify");
+    expect(yaml).not.toContain("Ilshidur/action-discord");
   });
 
   it("includes Jest test step when jestTests is true", () => {

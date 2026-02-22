@@ -151,7 +151,22 @@ describe("SecretsList — store publishing secrets", () => {
 });
 
 describe("SecretsList — notification secrets", () => {
-  it("shows Slack and Discord webhook secrets when notifications is true", () => {
+  it("shows both Slack and Discord webhook secrets when notificationType is both", () => {
+    render(
+      <SecretsList
+        storageType="github-release"
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "both",
+        }}
+      />,
+    );
+    expect(screen.getByText("SLACK_WEBHOOK")).toBeInTheDocument();
+    expect(screen.getByText("DISCORD_WEBHOOK")).toBeInTheDocument();
+  });
+
+  it("shows both webhooks when notificationType is undefined (backward compat)", () => {
     render(
       <SecretsList
         storageType="github-release"
@@ -159,6 +174,36 @@ describe("SecretsList — notification secrets", () => {
       />,
     );
     expect(screen.getByText("SLACK_WEBHOOK")).toBeInTheDocument();
+    expect(screen.getByText("DISCORD_WEBHOOK")).toBeInTheDocument();
+  });
+
+  it("shows only Slack webhook when notificationType is slack", () => {
+    render(
+      <SecretsList
+        storageType="github-release"
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "slack",
+        }}
+      />,
+    );
+    expect(screen.getByText("SLACK_WEBHOOK")).toBeInTheDocument();
+    expect(screen.queryByText("DISCORD_WEBHOOK")).not.toBeInTheDocument();
+  });
+
+  it("shows only Discord webhook when notificationType is discord", () => {
+    render(
+      <SecretsList
+        storageType="github-release"
+        advancedOptions={{
+          ...defaultOptions,
+          notifications: true,
+          notificationType: "discord",
+        }}
+      />,
+    );
+    expect(screen.queryByText("SLACK_WEBHOOK")).not.toBeInTheDocument();
     expect(screen.getByText("DISCORD_WEBHOOK")).toBeInTheDocument();
   });
 

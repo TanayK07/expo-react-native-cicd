@@ -100,18 +100,24 @@ const SecretsList: React.FC<SecretsListProps> = ({
         )}
 
         {/* Notification secrets */}
-        {options.notifications && (
-          <>
+        {options.notifications &&
+          (options.notificationType === "slack" ||
+            options.notificationType === "both" ||
+            !options.notificationType) && (
             <li className="text-gray-800 dark:text-gray-200">
               <strong>SLACK_WEBHOOK</strong>: Slack webhook URL for
-              notifications (optional)
+              notifications
             </li>
+          )}
+        {options.notifications &&
+          (options.notificationType === "discord" ||
+            options.notificationType === "both" ||
+            !options.notificationType) && (
             <li className="text-gray-800 dark:text-gray-200">
               <strong>DISCORD_WEBHOOK</strong>: Discord webhook URL for
-              notifications (optional)
+              notifications
             </li>
-          </>
-        )}
+          )}
       </ul>
     </div>
   );
