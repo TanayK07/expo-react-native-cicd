@@ -32,6 +32,11 @@ jobs:
           - { name: "npm-eslint-only",     index: 12, fixture: "npm-app"  }
           - { name: "npm-rntl-hooks",      index: 13, fixture: "npm-app"  }
           - { name: "yarn-prettier-only",  index: 14, fixture: "yarn-app" }
+          - { name: "pnpm-no-tests",       index: 15, fixture: "pnpm-app" }
+          - { name: "pnpm-typescript",      index: 16, fixture: "pnpm-app" }
+          - { name: "pnpm-all-static",      index: 17, fixture: "pnpm-app" }
+          - { name: "pnpm-all-tests",       index: 18, fixture: "pnpm-app" }
+          - { name: "pnpm-no-caching",      index: 19, fixture: "pnpm-app" }
 
     steps:
       - name: Checkout repository
@@ -55,6 +60,9 @@ jobs:
         run: |
           if [ "${{ matrix.fixture }}" = "yarn-app" ]; then
             yarn install --frozen-lockfile
+          elif [ "${{ matrix.fixture }}" = "pnpm-app" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
           else
             npm ci
           fi

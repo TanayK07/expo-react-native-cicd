@@ -148,5 +148,80 @@
       }
     },
     "fixture": "npm-app"
+  },
+  {
+    "name": "pnpm-eas-development",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eas-production-apk",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-apk"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eas-production",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-aab"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
   }
 ]

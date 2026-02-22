@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
   const [formState, setFormState] = useState({
-    packageManager: "yarn" as "yarn" | "npm",
+    packageManager: "yarn" as "yarn" | "npm" | "pnpm",
     storageType: "github",
     buildTypes: ["dev", "prod-apk", "prod-aab"],
     tests: ["typescript", "eslint", "prettier"],
@@ -317,19 +317,29 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
           onChange={(e) =>
             setFormState({
               ...formState,
-              packageManager: e.target.value as "yarn" | "npm",
+              packageManager: e.target.value as "yarn" | "npm" | "pnpm",
             })
           }
           className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500"
         >
           <option value="yarn">Yarn</option>
           <option value="npm">npm</option>
+          <option value="pnpm">pnpm</option>
         </select>
         {formState.packageManager === "npm" && (
           <p className="text-xs italic text-gray-600 dark:text-gray-400">
             Make sure your project has a{" "}
             <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
               package-lock.json
+            </code>{" "}
+            file committed to your repository for caching to work correctly.
+          </p>
+        )}
+        {formState.packageManager === "pnpm" && (
+          <p className="text-xs italic text-gray-600 dark:text-gray-400">
+            Make sure your project has a{" "}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+              pnpm-lock.yaml
             </code>{" "}
             file committed to your repository for caching to work correctly.
           </p>

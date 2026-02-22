@@ -13,24 +13,25 @@ describe("matrix-generator", () => {
       matrix = generatePrMatrix();
     });
 
-    it("generates exactly 15 entries", () => {
-      expect(matrix).toHaveLength(15);
+    it("generates exactly 20 entries", () => {
+      expect(matrix).toHaveLength(20);
     });
 
     it("every entry has a name, config, and fixture", () => {
       for (const entry of matrix) {
         expect(entry.name).toBeTruthy();
         expect(entry.config).toBeDefined();
-        expect(entry.fixture).toMatch(/^(yarn|npm)-app$/);
+        expect(entry.fixture).toMatch(/^(yarn|npm|pnpm)-app$/);
       }
     });
 
-    it("has both yarn and npm entries", () => {
+    it("has yarn, npm, and pnpm entries", () => {
       const pkgManagers = matrix.map(
         (e) => e.config.packageManager || "yarn"
       );
       expect(pkgManagers).toContain("yarn");
       expect(pkgManagers).toContain("npm");
+      expect(pkgManagers).toContain("pnpm");
     });
 
     it("has entries with no tests", () => {
@@ -68,6 +69,8 @@ describe("matrix-generator", () => {
       for (const entry of matrix) {
         if (entry.config.packageManager === "npm") {
           expect(entry.fixture).toBe("npm-app");
+        } else if (entry.config.packageManager === "pnpm") {
+          expect(entry.fixture).toBe("pnpm-app");
         } else {
           expect(entry.fixture).toBe("yarn-app");
         }
@@ -91,8 +94,8 @@ describe("matrix-generator", () => {
       expect(matrix.length).toBeGreaterThan(100);
     });
 
-    it("generates less than 300 entries (deduplicated)", () => {
-      expect(matrix.length).toBeLessThan(300);
+    it("generates less than 500 entries (deduplicated)", () => {
+      expect(matrix.length).toBeLessThan(500);
     });
 
     it("all entry names are unique", () => {
@@ -100,12 +103,13 @@ describe("matrix-generator", () => {
       expect(new Set(names).size).toBe(names.length);
     });
 
-    it("has both package managers", () => {
+    it("has all three package managers", () => {
       const pkgManagers = new Set(
         matrix.map((e) => e.config.packageManager || "yarn")
       );
       expect(pkgManagers.has("yarn")).toBe(true);
       expect(pkgManagers.has("npm")).toBe(true);
+      expect(pkgManagers.has("pnpm")).toBe(true);
     });
 
     it("has entries with each individual test type", () => {
@@ -147,6 +151,8 @@ describe("matrix-generator", () => {
       for (const entry of matrix) {
         if (entry.config.packageManager === "npm") {
           expect(entry.fixture).toBe("npm-app");
+        } else if (entry.config.packageManager === "pnpm") {
+          expect(entry.fixture).toBe("pnpm-app");
         } else {
           expect(entry.fixture).toBe("yarn-app");
         }
@@ -161,8 +167,8 @@ describe("matrix-generator", () => {
       matrix = generateEasMatrix();
     });
 
-    it("generates exactly 6 entries", () => {
-      expect(matrix).toHaveLength(6);
+    it("generates exactly 9 entries", () => {
+      expect(matrix).toHaveLength(9);
     });
 
     it("has 3 entries per package manager", () => {
@@ -172,8 +178,12 @@ describe("matrix-generator", () => {
       const npmEntries = matrix.filter(
         (e) => e.config.packageManager === "npm"
       );
+      const pnpmEntries = matrix.filter(
+        (e) => e.config.packageManager === "pnpm"
+      );
       expect(yarnEntries).toHaveLength(3);
       expect(npmEntries).toHaveLength(3);
+      expect(pnpmEntries).toHaveLength(3);
     });
 
     it("covers dev, prod-apk, and prod-aab build types", () => {

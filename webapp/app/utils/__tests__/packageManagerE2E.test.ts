@@ -319,6 +319,148 @@ describe("npm: all commands are correct in parsed YAML", () => {
   });
 });
 
+// ─── 2b. pnpm Command Correctness (parsed YAML) ─────────────────────────────
+
+describe("pnpm: all commands are correct in parsed YAML", () => {
+  const pnpmFullConfig = makeForm({
+    packageManager: "pnpm",
+    storageType: "github-release",
+    buildTypes: ["dev", "prod-apk", "prod-aab"],
+    tests: ["typescript", "eslint", "prettier"],
+    triggers: ["push-main", "pull-request", "manual"],
+    advancedOptions: {
+      ...DEFAULT_ADVANCED,
+      caching: true,
+      jestTests: true,
+      rntlTests: true,
+      renderHookTests: true,
+    },
+  });
+
+  let wf: GHAWorkflow;
+  let allSteps: GHAStep[];
+
+  beforeAll(() => {
+    const yamlStr = generateWorkflowYaml(pnpmFullConfig);
+    wf = parse(yamlStr);
+    allSteps = Object.values(wf.jobs).flatMap((j) => j.steps);
+  });
+
+  it("install dependencies step uses 'pnpm install'", () => {
+    const installSteps = allSteps.filter((s) =>
+      s.name?.includes("Install dependencies"),
+    );
+    expect(installSteps.length).toBeGreaterThanOrEqual(1);
+    for (const step of installSteps) {
+      expect(step.run).toContain("pnpm install");
+      expect(step.run).not.toContain("yarn install");
+      expect(step.run).not.toMatch(/(?<!p)npm install/);
+    }
+  });
+
+  it("EAS CLI install uses 'pnpm add -g eas-cli@latest'", () => {
+    const buildJob =
+      wf.jobs["build-and-release"] || wf.jobs["build-and-deploy"];
+    const installStep = buildJob.steps.find((s) =>
+      s.name?.includes("Install dependencies"),
+    );
+    expect(installStep?.run).toContain("pnpm add -g eas-cli@latest");
+    expect(installStep?.run).not.toContain("yarn global add");
+    expect(installStep?.run).not.toMatch(/(?<!p)npm install -g/);
+  });
+
+  it("TypeScript check uses 'pnpm tsc'", () => {
+    const tsStep = allSteps.find((s) => s.name?.includes("TypeScript check"));
+    expect(tsStep).toBeDefined();
+    expect(tsStep?.run).toBe("pnpm tsc");
+  });
+
+  it("ESLint step uses 'pnpm lint'", () => {
+    const lintStep = allSteps.find((s) => s.name?.includes("ESLint"));
+    expect(lintStep).toBeDefined();
+    expect(lintStep?.run).toBe("pnpm lint");
+  });
+
+  it("Prettier step uses 'pnpm format:check'", () => {
+    const prettierStep = allSteps.find((s) =>
+      s.name?.includes("Prettier check"),
+    );
+    expect(prettierStep).toBeDefined();
+    expect(prettierStep?.run).toBe("pnpm format:check");
+  });
+
+  it("Jest step uses 'pnpm test'", () => {
+    const jestStep = allSteps.find((s) => s.name?.includes("Jest Tests"));
+    expect(jestStep).toBeDefined();
+    expect(jestStep?.run).toBe("pnpm test");
+  });
+
+  it("RNTL step uses 'pnpm test:rntl'", () => {
+    const rntlStep = allSteps.find((s) =>
+      s.name?.includes("React Native Testing Library"),
+    );
+    expect(rntlStep).toBeDefined();
+    expect(rntlStep?.run).toBe("pnpm test:rntl");
+  });
+
+  it("renderHook step uses 'pnpm test:hooks'", () => {
+    const hookStep = allSteps.find((s) => s.name?.includes("renderHook Tests"));
+    expect(hookStep).toBeDefined();
+    expect(hookStep?.run).toBe("pnpm test:hooks");
+  });
+
+  it("cache directory step uses 'pnpm store path'", () => {
+    const cacheSteps = allSteps.filter((s) =>
+      s.name?.includes("cache directory path"),
+    );
+    expect(cacheSteps.length).toBeGreaterThanOrEqual(1);
+    for (const step of cacheSteps) {
+      expect(step.run).toContain("pnpm store path");
+      expect(step.id).toBe("pnpm-cache-dir-path");
+    }
+  });
+
+  it("cache setup step name contains 'pnpm' and key uses pnpm-lock.yaml", () => {
+    const cacheSetupSteps = allSteps.filter(
+      (s) =>
+        s.uses?.includes("actions/cache") &&
+        s.name?.includes("Setup pnpm cache"),
+    );
+    expect(cacheSetupSteps.length).toBeGreaterThanOrEqual(1);
+    for (const step of cacheSetupSteps) {
+      const key = step.with?.key as string;
+      expect(key).toContain("pnpm-lock.yaml");
+      expect(key).toContain("-pnpm-");
+      expect(key).not.toContain("yarn");
+      expect(key).not.toContain("package-lock.json");
+    }
+  });
+
+  it("actions/setup-node uses cache: 'pnpm'", () => {
+    for (const job of Object.values(wf.jobs)) {
+      for (const step of job.steps) {
+        if (step.uses?.includes("actions/setup-node")) {
+          expect(step.with?.cache).toBe("pnpm");
+        }
+      }
+    }
+  });
+
+  it("raw YAML string contains zero occurrences of 'yarn' or standalone 'npm' commands when pnpm is selected (full config)", () => {
+    const yamlStr = generateWorkflowYaml(pnpmFullConfig);
+    expect(yamlStr).not.toContain("yarn");
+    // Use regex to match standalone npm (not preceded by 'p' which would be pnpm)
+    expect(yamlStr).not.toMatch(/(?<!p)npm install/);
+    expect(yamlStr).not.toMatch(/(?<!p)npm run /);
+    expect(yamlStr).not.toMatch(/(?<!p)npm test/);
+    expect(yamlStr).not.toMatch(/(?<!p)npm config get cache/);
+    expect(yamlStr).not.toContain("npx tsc");
+    expect(yamlStr).not.toContain('cache: "npm"');
+    expect(yamlStr).not.toContain('cache: "yarn"');
+    expect(yamlStr).not.toContain("package-lock.json");
+  });
+});
+
 // ─── 3. Yarn Backward Compatibility ─────────────────────────────────────────
 //
 // Ensure existing yarn behavior is UNCHANGED — this prevents regressions
@@ -585,6 +727,122 @@ describe("npm × advanced options: valid YAML and no yarn leakage", () => {
   }
 });
 
+// ─── 6b. Cross-product: pnpm × every storage type ──────────────────────────
+
+describe("pnpm × every storage type: valid YAML and correct commands", () => {
+  const STORAGE_TYPES = [
+    "github-release",
+    "zoho-drive",
+    "google-drive",
+    "custom",
+  ];
+
+  for (const storageType of STORAGE_TYPES) {
+    it(`pnpm + ${storageType}: parses as valid YAML with no yarn/npm references`, () => {
+      const yamlStr = generateWorkflowYaml(
+        makeForm({
+          packageManager: "pnpm",
+          storageType,
+          buildTypes: ["dev", "prod-apk", "prod-aab"],
+          tests: ["typescript", "eslint", "prettier"],
+          triggers: ["push-main", "pull-request", "manual"],
+          advancedOptions: { ...DEFAULT_ADVANCED, caching: true },
+        }),
+      );
+
+      // Must parse without error
+      let parsed: unknown;
+      expect(() => {
+        parsed = yaml.load(yamlStr);
+      }).not.toThrow();
+      expect(parsed).not.toBeNull();
+
+      // Zero yarn/npm references (use regex to avoid matching 'npm' inside 'pnpm')
+      expect(yamlStr).not.toContain("yarn");
+      expect(yamlStr).not.toMatch(/(?<!p)npm install/);
+      expect(yamlStr).not.toMatch(/(?<!p)npm run /);
+      expect(yamlStr).not.toMatch(/(?<!p)npm test/);
+      expect(yamlStr).not.toContain('cache: "npm"');
+      expect(yamlStr).not.toContain('cache: "yarn"');
+    });
+  }
+});
+
+// ─── 6c. Cross-product: pnpm × every advanced option ───────────────────────
+
+describe("pnpm × advanced options: valid YAML and no yarn/npm leakage", () => {
+  const ADVANCED_COMBOS: Array<{
+    label: string;
+    opts: Partial<AdvancedOptions>;
+  }> = [
+    { label: "caching disabled", opts: { caching: false } },
+    {
+      label: "iOS support",
+      opts: { iOSSupport: true },
+    },
+    {
+      label: "publishToExpo",
+      opts: { publishToExpo: true },
+    },
+    {
+      label: "publishToStores + iOS",
+      opts: { publishToStores: true, iOSSupport: true },
+    },
+    {
+      label: "all notifications (both)",
+      opts: { notifications: true, notificationType: "both" },
+    },
+    {
+      label: "discord notifications",
+      opts: { notifications: true, notificationType: "discord" },
+    },
+    {
+      label: "slack notifications",
+      opts: { notifications: true, notificationType: "slack" },
+    },
+    {
+      label: "all advanced options enabled",
+      opts: {
+        iOSSupport: true,
+        publishToExpo: true,
+        publishToStores: true,
+        jestTests: true,
+        rntlTests: true,
+        renderHookTests: true,
+        caching: true,
+        notifications: true,
+        notificationType: "both",
+      },
+    },
+  ];
+
+  for (const { label, opts } of ADVANCED_COMBOS) {
+    it(`pnpm + ${label}: valid YAML, zero yarn/npm references`, () => {
+      const yamlStr = generateWorkflowYaml(
+        makeForm({
+          packageManager: "pnpm",
+          storageType: "github-release",
+          buildTypes: ["dev", "prod-apk"],
+          tests: ["typescript", "eslint"],
+          triggers: ["push-main", "manual"],
+          advancedOptions: { ...DEFAULT_ADVANCED, ...opts },
+        }),
+      );
+
+      // Parse
+      expect(() => yaml.load(yamlStr)).not.toThrow();
+
+      // No yarn/npm leakage (use regex to avoid matching 'npm' inside 'pnpm')
+      expect(yamlStr).not.toContain("yarn");
+      expect(yamlStr).not.toMatch(/(?<!p)npm install/);
+      expect(yamlStr).not.toMatch(/(?<!p)npm run /);
+      expect(yamlStr).not.toMatch(/(?<!p)npm test/);
+      expect(yamlStr).not.toContain('cache: "npm"');
+      expect(yamlStr).not.toContain('cache: "yarn"');
+    });
+  }
+});
+
 // ─── 7. GHA Schema Compliance for npm configs ──────────────────────────────
 //
 // Validates that npm-generated workflows pass the same GHA structural checks
@@ -668,10 +926,95 @@ describe("npm: GitHub Actions schema compliance across permutations", () => {
   }
 });
 
+// ─── 7b. GHA Schema Compliance for pnpm configs ─────────────────────────────
+
+describe("pnpm: GitHub Actions schema compliance across permutations", () => {
+  const STORAGE_TYPES = [
+    "github-release",
+    "zoho-drive",
+    "google-drive",
+    "custom",
+  ];
+  const BUILD_COMBOS = [
+    ["dev"],
+    ["prod-apk"],
+    ["prod-aab"],
+    ["dev", "prod-apk", "prod-aab"],
+  ];
+  const TEST_COMBOS = [
+    [],
+    ["typescript"],
+    ["typescript", "eslint", "prettier"],
+  ];
+  const TRIGGER_COMBOS = [["push-main"], ["manual"], ["push-main", "manual"]];
+
+  // 4 × 4 × 3 × 3 = 144 permutations
+  for (const storageType of STORAGE_TYPES) {
+    for (const buildTypes of BUILD_COMBOS) {
+      for (const tests of TEST_COMBOS) {
+        for (const triggers of TRIGGER_COMBOS) {
+          const label = `pnpm | ${storageType} | builds=[${buildTypes}] | tests=[${tests.length ? tests : "none"}] | triggers=[${triggers}]`;
+
+          it(`valid GHA: ${label}`, () => {
+            const yamlStr = generateWorkflowYaml({
+              packageManager: "pnpm",
+              storageType,
+              buildTypes,
+              tests,
+              triggers,
+              advancedOptions: { ...DEFAULT_ADVANCED },
+            });
+
+            const parsed = yaml.load(yamlStr) as GHAWorkflow;
+
+            // Top-level structure
+            expect(parsed.name).toBeDefined();
+            expect(parsed.on).toBeDefined();
+            expect(parsed.jobs).toBeDefined();
+
+            // Every job has runs-on and non-empty steps
+            for (const [jobId, job] of Object.entries(parsed.jobs)) {
+              expect(job["runs-on"]).toBeDefined();
+              expect(job.steps.length).toBeGreaterThan(0);
+
+              // Every step has uses XOR run
+              for (const step of job.steps) {
+                const hasUses =
+                  typeof step.uses === "string" && step.uses.length > 0;
+                const hasRun =
+                  typeof step.run === "string" && step.run.length > 0;
+                expect(hasUses || hasRun).toBe(true);
+                expect(hasUses && hasRun).toBe(false);
+              }
+
+              // needs references must be valid
+              if (job.needs) {
+                const deps = Array.isArray(job.needs) ? job.needs : [job.needs];
+                const jobNames = Object.keys(parsed.jobs);
+                for (const dep of deps) {
+                  expect(jobNames).toContain(dep);
+                }
+              }
+            }
+
+            // No yarn/npm references (use regex to avoid matching 'npm' inside 'pnpm')
+            expect(yamlStr).not.toContain("yarn");
+            expect(yamlStr).not.toMatch(/(?<!p)npm install/);
+            expect(yamlStr).not.toMatch(/(?<!p)npm run /);
+            expect(yamlStr).not.toMatch(/(?<!p)npm test/);
+            expect(yamlStr).not.toContain('cache: "npm"');
+            expect(yamlStr).not.toContain('cache: "yarn"');
+          });
+        }
+      }
+    }
+  }
+});
+
 // ─── 8. Caching disabled: no cache steps for either package manager ─────────
 
 describe("caching disabled: no cache steps regardless of package manager", () => {
-  for (const pkgMgr of ["yarn", "npm"] as const) {
+  for (const pkgMgr of ["yarn", "npm", "pnpm"] as const) {
     it(`${pkgMgr}: no cache steps when caching=false`, () => {
       const yamlStr = generateWorkflowYaml(
         makeForm({
@@ -692,7 +1035,8 @@ describe("caching disabled: no cache steps regardless of package manager", () =>
       const pkgCacheSteps = cacheSteps.filter(
         (s) =>
           s.name?.includes("Setup yarn cache") ||
-          s.name?.includes("Setup npm cache"),
+          s.name?.includes("Setup npm cache") ||
+          s.name?.includes("Setup pnpm cache"),
       );
       expect(pkgCacheSteps.length).toBe(0);
 
@@ -731,6 +1075,40 @@ describe("npm snapshots", () => {
   it("matches snapshot for npm minimal config (no tests, no caching)", () => {
     const yamlStr = generateWorkflowYaml({
       packageManager: "npm",
+      storageType: "github-release",
+      buildTypes: ["dev"],
+      tests: [],
+      triggers: ["push-main"],
+      advancedOptions: { ...DEFAULT_ADVANCED, caching: false },
+    });
+    expect(yamlStr).toMatchSnapshot();
+  });
+});
+
+// ─── 10. Snapshot: pnpm full config ──────────────────────────────────────────
+
+describe("pnpm snapshots", () => {
+  it("matches snapshot for pnpm full config", () => {
+    const yamlStr = generateWorkflowYaml({
+      packageManager: "pnpm",
+      storageType: "github-release",
+      buildTypes: ["dev", "prod-apk", "prod-aab"],
+      tests: ["typescript", "eslint", "prettier"],
+      triggers: ["push-main", "pull-request", "manual"],
+      advancedOptions: {
+        ...DEFAULT_ADVANCED,
+        caching: true,
+        jestTests: true,
+        rntlTests: true,
+        renderHookTests: true,
+      },
+    });
+    expect(yamlStr).toMatchSnapshot();
+  });
+
+  it("matches snapshot for pnpm minimal config (no tests, no caching)", () => {
+    const yamlStr = generateWorkflowYaml({
+      packageManager: "pnpm",
       storageType: "github-release",
       buildTypes: ["dev"],
       tests: [],

@@ -593,6 +593,32 @@ describe("Step validity: every step has `uses` XOR `run`", () => {
         },
       },
     },
+    {
+      label: "pnpm, github-release, all builds, all tests, all triggers",
+      config: {
+        packageManager: "pnpm" as const,
+        storageType: "github-release",
+        buildTypes: ["dev", "prod-apk", "prod-aab"],
+        tests: ["typescript", "eslint", "prettier"],
+        triggers: ["push-main", "pull-request", "manual"],
+        advancedOptions: { ...DEFAULT_ADVANCED, caching: true },
+      },
+    },
+    {
+      label: "pnpm, google-drive, dev only, jest + caching",
+      config: {
+        packageManager: "pnpm" as const,
+        storageType: "google-drive",
+        buildTypes: ["dev"],
+        tests: ["typescript"],
+        triggers: ["push-main"],
+        advancedOptions: {
+          ...DEFAULT_ADVANCED,
+          caching: true,
+          jestTests: true,
+        },
+      },
+    },
   ];
 
   for (const { label, config } of REPRESENTATIVE_CONFIGS) {

@@ -7,7 +7,7 @@ import { FormValues, commandSignature } from "./command-extractor";
 export interface MatrixEntry {
   name: string;
   config: FormValues;
-  fixture: "yarn-app" | "npm-app";
+  fixture: "yarn-app" | "npm-app" | "pnpm-app";
 }
 
 /**
@@ -35,9 +35,11 @@ function baseConfig(overrides: Partial<FormValues>): FormValues {
 }
 
 function fixtureForPkgMgr(
-  pkgMgr: "yarn" | "npm" | undefined
-): "yarn-app" | "npm-app" {
-  return pkgMgr === "npm" ? "npm-app" : "yarn-app";
+  pkgMgr: "yarn" | "npm" | "pnpm" | undefined
+): "yarn-app" | "npm-app" | "pnpm-app" {
+  if (pkgMgr === "npm") return "npm-app";
+  if (pkgMgr === "pnpm") return "pnpm-app";
+  return "yarn-app";
 }
 
 /**
@@ -232,6 +234,65 @@ export function generatePrMatrix(): MatrixEntry[] {
       config: baseConfig({ packageManager: "yarn", tests: ["prettier"] }),
       fixture: "yarn-app",
     },
+    // 16. pnpm + no tests
+    {
+      name: "pnpm-no-tests",
+      config: baseConfig({ packageManager: "pnpm", tests: [] }),
+      fixture: "pnpm-app",
+    },
+    // 17. pnpm + typescript only
+    {
+      name: "pnpm-typescript-only",
+      config: baseConfig({ packageManager: "pnpm", tests: ["typescript"] }),
+      fixture: "pnpm-app",
+    },
+    // 18. pnpm + all static tests
+    {
+      name: "pnpm-all-static",
+      config: baseConfig({
+        packageManager: "pnpm",
+        tests: ["typescript", "eslint", "prettier"],
+      }),
+      fixture: "pnpm-app",
+    },
+    // 19. pnpm + all tests
+    {
+      name: "pnpm-all-tests",
+      config: baseConfig({
+        packageManager: "pnpm",
+        tests: ["typescript", "eslint", "prettier"],
+        advancedOptions: {
+          iOSSupport: false,
+          publishToExpo: false,
+          publishToStores: false,
+          jestTests: true,
+          rntlTests: true,
+          renderHookTests: true,
+          caching: true,
+          notifications: false,
+        },
+      }),
+      fixture: "pnpm-app",
+    },
+    // 20. pnpm + no caching
+    {
+      name: "pnpm-no-caching",
+      config: baseConfig({
+        packageManager: "pnpm",
+        tests: ["typescript", "eslint"],
+        advancedOptions: {
+          iOSSupport: false,
+          publishToExpo: false,
+          publishToStores: false,
+          jestTests: true,
+          rntlTests: false,
+          renderHookTests: false,
+          caching: false,
+          notifications: false,
+        },
+      }),
+      fixture: "pnpm-app",
+    },
   ];
 
   return entries;
@@ -279,7 +340,7 @@ function allJestCombinations(): {
  * Generate the full nightly matrix, deduplicated by command signature.
  */
 export function generateNightlyMatrix(): MatrixEntry[] {
-  const packageManagers: ("yarn" | "npm")[] = ["yarn", "npm"];
+  const packageManagers: ("yarn" | "npm" | "pnpm")[] = ["yarn", "npm", "pnpm"];
   const testSubsets = allTestSubsets();
   const jestCombos = allJestCombinations();
   const cachingValues = [true, false];
@@ -346,7 +407,7 @@ export function generateNightlyMatrix(): MatrixEntry[] {
  * Generate EAS build matrix (2 package managers x 3 profiles).
  */
 export function generateEasMatrix(): MatrixEntry[] {
-  const packageManagers: ("yarn" | "npm")[] = ["yarn", "npm"];
+  const packageManagers: ("yarn" | "npm" | "pnpm")[] = ["yarn", "npm", "pnpm"];
   const profiles = ["development", "production-apk", "production"];
   const buildTypeMap: Record<string, string[]> = {
     development: ["dev"],

@@ -69,6 +69,9 @@ jobs:
         run: |
           if [ "${{ steps.fixture.outputs.dir }}" = "yarn-app" ]; then
             yarn install --frozen-lockfile
+          elif [ "${{ steps.fixture.outputs.dir }}" = "pnpm-app" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
           else
             npm ci
           fi
