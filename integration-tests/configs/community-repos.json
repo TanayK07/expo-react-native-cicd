@@ -1,0 +1,16 @@
+[
+  {
+    "repo": "expo/examples",
+    "subdir": "with-router",
+    "packageManager": "npm",
+    "sha": "main",
+    "description": "Expo Router example app"
+  },
+  {
+    "repo": "callstack/react-native-paper",
+    "subdir": "example",
+    "packageManager": "yarn",
+    "sha": "main",
+    "description": "React Native Paper example app"
+  }
+]

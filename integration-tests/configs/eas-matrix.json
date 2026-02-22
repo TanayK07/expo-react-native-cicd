@@ -1,0 +1,152 @@
+[
+  {
+    "name": "yarn-eas-development",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "yarn",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "yarn-app"
+  },
+  {
+    "name": "yarn-eas-production-apk",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-apk"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "yarn",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "yarn-app"
+  },
+  {
+    "name": "yarn-eas-production",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-aab"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "yarn",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "yarn-app"
+  },
+  {
+    "name": "npm-eas-development",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "npm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "npm-app"
+  },
+  {
+    "name": "npm-eas-production-apk",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-apk"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "npm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "npm-app"
+  },
+  {
+    "name": "npm-eas-production",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "prod-aab"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "npm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "npm-app"
+  }
+]
