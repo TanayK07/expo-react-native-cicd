@@ -690,7 +690,129 @@ describe("generateWorkflowYaml — edge cases", () => {
   });
 });
 
-// ─── 9. Snapshot Tests ────────────────────────────────────────────────────────
+// ─── 9. Package Manager Selection ──────────────────────────────────────────────
+
+describe("generateWorkflowYaml — package manager selection", () => {
+  it("defaults to yarn commands when packageManager is unset", () => {
+    const yaml = generateWorkflowYaml(makeForm({ tests: ["typescript"] }));
+    expect(yaml).toContain('cache: "yarn"');
+    expect(yaml).toContain("yarn.lock");
+    expect(yaml).toContain("yarn install");
+    expect(yaml).toContain("yarn tsc");
+  });
+
+  it("uses npm install when packageManager is npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({ packageManager: "npm", tests: ["typescript"] }),
+    );
+    expect(yaml).toContain("npm install");
+    expect(yaml).not.toContain("yarn install");
+  });
+
+  it("uses cache: npm and package-lock.json when npm selected", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        advancedOptions: { ...defaultAdvancedOptions, caching: true },
+      }),
+    );
+    expect(yaml).toContain('cache: "npm"');
+    expect(yaml).toContain("package-lock.json");
+    expect(yaml).not.toContain("yarn.lock");
+  });
+
+  it("uses npm install -g eas-cli@latest when npm selected", () => {
+    const yaml = generateWorkflowYaml(makeForm({ packageManager: "npm" }));
+    expect(yaml).toContain("npm install -g eas-cli@latest");
+    expect(yaml).not.toContain("yarn global add eas-cli");
+  });
+
+  it("uses npx tsc for typescript check with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({ packageManager: "npm", tests: ["typescript"] }),
+    );
+    expect(yaml).toContain("npx tsc");
+    expect(yaml).not.toContain("yarn tsc");
+  });
+
+  it("uses npm run lint for eslint with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({ packageManager: "npm", tests: ["eslint"] }),
+    );
+    expect(yaml).toContain("npm run lint");
+  });
+
+  it("uses npm run format:check for prettier with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({ packageManager: "npm", tests: ["prettier"] }),
+    );
+    expect(yaml).toContain("npm run format:check");
+  });
+
+  it("uses npm test for jest tests with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        advancedOptions: { ...defaultAdvancedOptions, jestTests: true },
+      }),
+    );
+    expect(yaml).toContain("npm test");
+  });
+
+  it("uses npm run test:rntl for RNTL tests with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        advancedOptions: { ...defaultAdvancedOptions, rntlTests: true },
+      }),
+    );
+    expect(yaml).toContain("npm run test:rntl");
+  });
+
+  it("uses npm run test:hooks for renderHook tests with npm", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        advancedOptions: { ...defaultAdvancedOptions, renderHookTests: true },
+      }),
+    );
+    expect(yaml).toContain("npm run test:hooks");
+  });
+
+  it("uses npm config get cache and Setup npm cache with npm + caching", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        tests: ["typescript"],
+        advancedOptions: { ...defaultAdvancedOptions, caching: true },
+      }),
+    );
+    expect(yaml).toContain("npm config get cache");
+    expect(yaml).toContain("Setup npm cache");
+    expect(yaml).toContain("-npm-");
+    expect(yaml).not.toContain("yarn cache dir");
+    expect(yaml).not.toContain("Setup yarn cache");
+  });
+
+  it("has zero yarn references in entire output when npm selected", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        packageManager: "npm",
+        tests: ["typescript", "eslint", "prettier"],
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          caching: true,
+          jestTests: true,
+          rntlTests: true,
+          renderHookTests: true,
+        },
+      }),
+    );
+    expect(yaml).not.toContain("yarn");
+  });
+});
+
+// ─── 10. Snapshot Tests ───────────────────────────────────────────────────────
 
 describe("generateWorkflowYaml — snapshots", () => {
   it("matches snapshot for minimal config (push-main, dev APK, github-release)", () => {

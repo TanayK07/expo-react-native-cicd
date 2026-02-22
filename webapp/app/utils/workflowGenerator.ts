@@ -3,6 +3,24 @@ import { FormValues } from "../types";
 export const generateWorkflowYaml = (values: FormValues): string => {
   const { storageType, buildTypes, tests, triggers, advancedOptions } = values;
 
+  // Package manager helpers
+  const pkgMgr = values.packageManager || "yarn";
+  const lockfile = pkgMgr === "yarn" ? "yarn.lock" : "package-lock.json";
+  const installCmd = pkgMgr === "yarn" ? "yarn install" : "npm install";
+  const globalInstallEas =
+    pkgMgr === "yarn"
+      ? "yarn global add eas-cli@latest"
+      : "npm install -g eas-cli@latest";
+  const cacheStepId =
+    pkgMgr === "yarn" ? "yarn-cache-dir-path" : "npm-cache-dir-path";
+  const cacheGetCmd =
+    pkgMgr === "yarn" ? "yarn cache dir" : "npm config get cache";
+  const run = (script: string) => {
+    if (pkgMgr === "yarn") return `yarn ${script}`;
+    if (script === "test") return "npm test";
+    return `npm run ${script}`;
+  };
+
   // Set defaults for advanced options if not provided
   const options = advancedOptions || {
     iOSSupport: false,
@@ -122,41 +140,41 @@ export const generateWorkflowYaml = (values: FormValues): string => {
     options.renderHookTests
   ) {
     yaml += `  test:\n    needs: check-skip\n    runs-on: ubuntu-latest\n    steps:\n      - name: 🏗 Checkout repository\n        uses: actions/checkout@v4\n\n`;
-    yaml += `      - name: 🏗 Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "yarn"\n\n`;
+    yaml += `      - name: 🏗 Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "${pkgMgr}"\n\n`;
 
     // Add caching if enabled
     if (options.caching) {
-      yaml += `      - name: 📦 Get yarn cache directory path\n        id: yarn-cache-dir-path\n        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT\n\n`;
-      yaml += `      - name: 📦 Setup yarn cache\n        uses: actions/cache@v3\n        with:\n          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}\n          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}\n          restore-keys: |\n            \${{ runner.os }}-yarn-\n\n`;
+      yaml += `      - name: 📦 Get ${pkgMgr} cache directory path\n        id: ${cacheStepId}\n        run: echo "dir=$(${cacheGetCmd})" >> $GITHUB_OUTPUT\n\n`;
+      yaml += `      - name: 📦 Setup ${pkgMgr} cache\n        uses: actions/cache@v3\n        with:\n          path: \${{ steps.${cacheStepId}.outputs.dir }}\n          key: \${{ runner.os }}-${pkgMgr}-\${{ hashFiles('**/${lockfile}') }}\n          restore-keys: |\n            \${{ runner.os }}-${pkgMgr}-\n\n`;
     }
 
-    yaml += `      - name: 📦 Install dependencies\n        run: yarn install\n\n`;
+    yaml += `      - name: 📦 Install dependencies\n        run: ${installCmd}\n\n`;
 
     if (tests.includes("typescript")) {
-      yaml += `      - name: 🧪 Run TypeScript check\n        run: yarn tsc\n\n`;
+      yaml += `      - name: 🧪 Run TypeScript check\n        run: ${pkgMgr === "yarn" ? "yarn tsc" : "npx tsc"}\n\n`;
     }
 
     if (tests.includes("eslint")) {
-      yaml += `      - name: 🧹 Run ESLint\n        run: yarn lint\n\n`;
+      yaml += `      - name: 🧹 Run ESLint\n        run: ${run("lint")}\n\n`;
     }
 
     if (tests.includes("prettier")) {
-      yaml += `      - name: 🎨 Run Prettier check\n        run: yarn format:check\n\n`;
+      yaml += `      - name: 🎨 Run Prettier check\n        run: ${run("format:check")}\n\n`;
     }
 
     // Add Jest tests if selected
     if (options.jestTests) {
-      yaml += `      - name: 🧪 Run Jest Tests\n        run: yarn test\n\n`;
+      yaml += `      - name: 🧪 Run Jest Tests\n        run: ${run("test")}\n\n`;
     }
 
     // Add RNTL tests if selected
     if (options.rntlTests) {
-      yaml += `      - name: 🧪 Run React Native Testing Library Tests\n        run: yarn test:rntl\n\n`;
+      yaml += `      - name: 🧪 Run React Native Testing Library Tests\n        run: ${run("test:rntl")}\n\n`;
     }
 
     // Add renderHook tests if selected
     if (options.renderHookTests) {
-      yaml += `      - name: 🧪 Run renderHook Tests\n        run: yarn test:hooks\n\n`;
+      yaml += `      - name: 🧪 Run renderHook Tests\n        run: ${run("test:hooks")}\n\n`;
     }
 
     // Add notification for test results if enabled
@@ -200,15 +218,15 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
   yaml += `    steps:\n`;
   yaml += `      - name: 🏗 Checkout repository\n        uses: actions/checkout@v4\n\n`;
-  yaml += `      - name: 🏗 Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "yarn"\n\n`;
+  yaml += `      - name: 🏗 Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "${pkgMgr}"\n\n`;
 
   // Add caching if enabled
   if (options.caching) {
-    yaml += `      - name: 📦 Get yarn cache directory path\n        id: yarn-cache-dir-path\n        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT\n\n`;
-    yaml += `      - name: 📦 Setup yarn cache\n        uses: actions/cache@v3\n        with:\n          path: \${{ steps.yarn-cache-dir-path.outputs.dir }}\n          key: \${{ runner.os }}-yarn-\${{ hashFiles('**/yarn.lock') }}\n          restore-keys: |\n            \${{ runner.os }}-yarn-\n\n`;
+    yaml += `      - name: 📦 Get ${pkgMgr} cache directory path\n        id: ${cacheStepId}\n        run: echo "dir=$(${cacheGetCmd})" >> $GITHUB_OUTPUT\n\n`;
+    yaml += `      - name: 📦 Setup ${pkgMgr} cache\n        uses: actions/cache@v3\n        with:\n          path: \${{ steps.${cacheStepId}.outputs.dir }}\n          key: \${{ runner.os }}-${pkgMgr}-\${{ hashFiles('**/${lockfile}') }}\n          restore-keys: |\n            \${{ runner.os }}-${pkgMgr}-\n\n`;
   }
 
-  yaml += `      - name: 📦 Install dependencies\n        run: |\n          yarn install\n          yarn global add eas-cli@latest\n\n`;
+  yaml += `      - name: 📦 Install dependencies\n        run: |\n          ${installCmd}\n          ${globalInstallEas}\n\n`;
 
   yaml += `      - name: 📱 Setup EAS build cache\n        uses: actions/cache@v3\n        with:\n          path: ~/.eas-build-local\n          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}\n          restore-keys: |\n            \${{ runner.os }}-eas-build-local-\n\n`;
   yaml += `      - name: 🔄 Verify EAS CLI installation\n        run: |\n          echo "EAS CLI version:"\n          eas --version\n\n`;

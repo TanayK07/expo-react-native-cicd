@@ -567,6 +567,32 @@ describe("Step validity: every step has `uses` XOR `run`", () => {
         },
       },
     },
+    {
+      label: "npm, github-release, all builds, all tests, all triggers",
+      config: {
+        packageManager: "npm" as const,
+        storageType: "github-release",
+        buildTypes: ["dev", "prod-apk", "prod-aab"],
+        tests: ["typescript", "eslint", "prettier"],
+        triggers: ["push-main", "pull-request", "manual"],
+        advancedOptions: { ...DEFAULT_ADVANCED, caching: true },
+      },
+    },
+    {
+      label: "npm, zoho-drive, dev only, jest + caching",
+      config: {
+        packageManager: "npm" as const,
+        storageType: "zoho-drive",
+        buildTypes: ["dev"],
+        tests: ["typescript"],
+        triggers: ["push-main"],
+        advancedOptions: {
+          ...DEFAULT_ADVANCED,
+          caching: true,
+          jestTests: true,
+        },
+      },
+    },
   ];
 
   for (const { label, config } of REPRESENTATIVE_CONFIGS) {
@@ -1121,9 +1147,14 @@ describe("Required build steps always present regardless of config", () => {
         steps.some((s) => s.uses?.includes("actions/setup-node")),
     },
     {
-      description: "EAS CLI installation (yarn global add eas-cli)",
+      description:
+        "EAS CLI installation (yarn global add or npm install -g eas-cli)",
       check: (steps) =>
-        steps.some((s) => s.run?.includes("yarn global add eas-cli")),
+        steps.some(
+          (s) =>
+            s.run?.includes("yarn global add eas-cli") ||
+            s.run?.includes("npm install -g eas-cli"),
+        ),
     },
     {
       description: "EAS build cache step (actions/cache@v3)",
