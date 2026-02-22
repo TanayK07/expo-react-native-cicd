@@ -741,21 +741,58 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
                   htmlFor="notifications"
                   className="ml-2 text-gray-700 dark:text-gray-300"
                 >
-                  Add Slack/Discord Notifications
+                  Add Notifications
                 </label>
               </div>
               {formState.advancedOptions.notifications && (
-                <p className="text-xs ml-6 text-gray-600 dark:text-gray-400">
-                  You'll need to add{" "}
-                  <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
-                    SLACK_WEBHOOK
-                  </code>{" "}
-                  or{" "}
-                  <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
-                    DISCORD_WEBHOOK
-                  </code>{" "}
-                  secrets
-                </p>
+                <div className="ml-6 space-y-2">
+                  <label
+                    htmlFor="notification-type"
+                    className="block text-sm text-gray-700 dark:text-gray-300"
+                  >
+                    Notification service:
+                  </label>
+                  <select
+                    id="notification-type"
+                    name="notification-type"
+                    value={formState.advancedOptions.notificationType || "both"}
+                    onChange={(e) => {
+                      const value = e.target.value as "slack" | "discord" | "both";
+                      setFormState((prev) => ({
+                        ...prev,
+                        advancedOptions: {
+                          ...prev.advancedOptions,
+                          notificationType: value,
+                        },
+                      }));
+                    }}
+                    className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                  >
+                    <option value="slack">Slack only</option>
+                    <option value="discord">Discord only</option>
+                    <option value="both">Both Slack & Discord</option>
+                  </select>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    You'll need to add the corresponding webhook secret(s):{" "}
+                    {(formState.advancedOptions.notificationType === "slack" ||
+                      formState.advancedOptions.notificationType === "both" ||
+                      !formState.advancedOptions.notificationType) && (
+                      <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+                        SLACK_WEBHOOK
+                      </code>
+                    )}
+                    {(!formState.advancedOptions.notificationType ||
+                      formState.advancedOptions.notificationType === "both") &&
+                      " and "}
+                    {(formState.advancedOptions.notificationType === "discord" ||
+                      formState.advancedOptions.notificationType === "both" ||
+                      !formState.advancedOptions.notificationType) && (
+                      <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+                        DISCORD_WEBHOOK
+                      </code>
+                    )}
+                  </p>
+                </div>
               )}
             </div>
           </div>

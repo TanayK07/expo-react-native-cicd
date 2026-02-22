@@ -83,8 +83,13 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
   // Add notification environment variables if needed
   if (options.notifications) {
-    yaml += `  SLACK_WEBHOOK: \${{ secrets.SLACK_WEBHOOK }}\n`;
-    yaml += `  DISCORD_WEBHOOK: \${{ secrets.DISCORD_WEBHOOK }}\n`;
+    const notifType = options.notificationType || 'both';
+    if (notifType === 'slack' || notifType === 'both') {
+      yaml += `  SLACK_WEBHOOK: \${{ secrets.SLACK_WEBHOOK }}\n`;
+    }
+    if (notifType === 'discord' || notifType === 'both') {
+      yaml += `  DISCORD_WEBHOOK: \${{ secrets.DISCORD_WEBHOOK }}\n`;
+    }
   }
 
   if (storageType === "zoho-drive") {
@@ -156,7 +161,13 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
     // Add notification for test results if enabled
     if (options.notifications) {
-      yaml += `      - name: 📢 Notify test results\n        if: always()\n        uses: rtCamp/action-slack-notify@v2\n        env:\n          SLACK_WEBHOOK: \${{ env.SLACK_WEBHOOK }}\n          SLACK_COLOR: \${{ job.status == 'success' && 'good' || 'danger' }}\n          SLACK_TITLE: Test Results\n          SLACK_MESSAGE: 'Tests \${{ job.status == "success" && "passed ✅" || "failed ❌" }}'\n\n`;
+      const notifType = options.notificationType || 'both';
+      if (notifType === 'slack' || notifType === 'both') {
+        yaml += `      - name: 📢 Notify test results via Slack\n        if: always()\n        uses: rtCamp/action-slack-notify@v2\n        env:\n          SLACK_WEBHOOK: \${{ env.SLACK_WEBHOOK }}\n          SLACK_COLOR: \${{ job.status == 'success' && 'good' || 'danger' }}\n          SLACK_TITLE: Test Results\n          SLACK_MESSAGE: 'Tests \${{ job.status == "success" && "passed ✅" || "failed ❌" }}'\n\n`;
+      }
+      if (notifType === 'discord' || notifType === 'both') {
+        yaml += `      - name: 📢 Notify test results via Discord\n        if: always()\n        uses: Ilshidur/action-discord@0.3.2\n        env:\n          DISCORD_WEBHOOK: \${{ env.DISCORD_WEBHOOK }}\n        with:\n          args: 'Tests \${{ job.status == "success" && "passed ✅" || "failed ❌" }}'\n\n`;
+      }
     }
   }
 
@@ -452,7 +463,13 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
   // Add notification for build results if enabled
   if (options.notifications) {
-    yaml += `\n      - name: 📢 Notify build completion\n        if: always()\n        uses: rtCamp/action-slack-notify@v2\n        env:\n          SLACK_WEBHOOK: \${{ env.SLACK_WEBHOOK }}\n          SLACK_COLOR: \${{ job.status == 'success' && 'good' || 'danger' }}\n          SLACK_TITLE: Build Results\n          SLACK_MESSAGE: 'Build \${{ job.status == "success" && "completed successfully ✅" || "failed ❌" }}'\n`;
+    const notifType = options.notificationType || 'both';
+    if (notifType === 'slack' || notifType === 'both') {
+      yaml += `\n      - name: 📢 Notify build completion via Slack\n        if: always()\n        uses: rtCamp/action-slack-notify@v2\n        env:\n          SLACK_WEBHOOK: \${{ env.SLACK_WEBHOOK }}\n          SLACK_COLOR: \${{ job.status == 'success' && 'good' || 'danger' }}\n          SLACK_TITLE: Build Results\n          SLACK_MESSAGE: 'Build \${{ job.status == "success" && "completed successfully ✅" || "failed ❌" }}'\n`;
+    }
+    if (notifType === 'discord' || notifType === 'both') {
+      yaml += `\n      - name: 📢 Notify build completion via Discord\n        if: always()\n        uses: Ilshidur/action-discord@0.3.2\n        env:\n          DISCORD_WEBHOOK: \${{ env.DISCORD_WEBHOOK }}\n        with:\n          args: 'Build \${{ job.status == "success" && "completed successfully ✅" || "failed ❌" }}'\n`;
+    }
   }
 
   return yaml;

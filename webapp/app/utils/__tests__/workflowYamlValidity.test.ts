@@ -538,6 +538,35 @@ describe("Step validity: every step has `uses` XOR `run`", () => {
         },
       },
     },
+    {
+      label: "github-release, discord notifications, all tests",
+      config: {
+        storageType: "github-release",
+        buildTypes: ["dev", "prod-apk"],
+        tests: ["typescript", "eslint"],
+        triggers: ["push-main", "manual"],
+        advancedOptions: {
+          ...DEFAULT_ADVANCED,
+          notifications: true,
+          notificationType: 'discord' as const,
+        },
+      },
+    },
+    {
+      label: "zoho-drive, slack notifications, jest tests",
+      config: {
+        storageType: "zoho-drive",
+        buildTypes: ["dev"],
+        tests: ["typescript"],
+        triggers: ["push-main"],
+        advancedOptions: {
+          ...DEFAULT_ADVANCED,
+          notifications: true,
+          notificationType: 'slack' as const,
+          jestTests: true,
+        },
+      },
+    },
   ];
 
   for (const { label, config } of REPRESENTATIVE_CONFIGS) {
@@ -653,7 +682,7 @@ describe("Env vars: correct secrets injected per storageType", () => {
     expect(parsed.env).toHaveProperty("GOOGLE_PLAY_SERVICE_ACCOUNT");
   });
 
-  it("notifications: has SLACK_WEBHOOK and DISCORD_WEBHOOK env vars", () => {
+  it("notifications (default/both): has SLACK_WEBHOOK and DISCORD_WEBHOOK env vars", () => {
     const yamlStr = generateWorkflowYaml({
       storageType: "github-release",
       buildTypes: ["dev"],
@@ -663,6 +692,32 @@ describe("Env vars: correct secrets injected per storageType", () => {
     });
     const { parsed } = parseAndValidate(yamlStr);
     expect(parsed.env).toHaveProperty("SLACK_WEBHOOK");
+    expect(parsed.env).toHaveProperty("DISCORD_WEBHOOK");
+  });
+
+  it("notifications (slack only): has SLACK_WEBHOOK but not DISCORD_WEBHOOK", () => {
+    const yamlStr = generateWorkflowYaml({
+      storageType: "github-release",
+      buildTypes: ["dev"],
+      tests: [],
+      triggers: ["push-main"],
+      advancedOptions: { ...DEFAULT_ADVANCED, notifications: true, notificationType: 'slack' },
+    });
+    const { parsed } = parseAndValidate(yamlStr);
+    expect(parsed.env).toHaveProperty("SLACK_WEBHOOK");
+    expect(parsed.env).not.toHaveProperty("DISCORD_WEBHOOK");
+  });
+
+  it("notifications (discord only): has DISCORD_WEBHOOK but not SLACK_WEBHOOK", () => {
+    const yamlStr = generateWorkflowYaml({
+      storageType: "github-release",
+      buildTypes: ["dev"],
+      tests: [],
+      triggers: ["push-main"],
+      advancedOptions: { ...DEFAULT_ADVANCED, notifications: true, notificationType: 'discord' },
+    });
+    const { parsed } = parseAndValidate(yamlStr);
+    expect(parsed.env).not.toHaveProperty("SLACK_WEBHOOK");
     expect(parsed.env).toHaveProperty("DISCORD_WEBHOOK");
   });
 });
@@ -903,7 +958,10 @@ describe("Advanced options permutations: YAML + GHA validity", () => {
     opts: Partial<AdvancedOptions>;
   }> = [
     { label: "caching=false", opts: { caching: false } },
-    { label: "notifications=true", opts: { notifications: true } },
+    { label: "notifications=true (default both)", opts: { notifications: true } },
+    { label: "notifications=true, notificationType=slack", opts: { notifications: true, notificationType: 'slack' as const } },
+    { label: "notifications=true, notificationType=discord", opts: { notifications: true, notificationType: 'discord' as const } },
+    { label: "notifications=true, notificationType=both", opts: { notifications: true, notificationType: 'both' as const } },
     { label: "jestTests=true", opts: { jestTests: true } },
     {
       label: "jestTests+rntlTests=true",
