@@ -1,0 +1,136 @@
+name: Integration Tests (Nightly)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  # Generate the matrix dynamically from the JSON file
+  setup-matrix:
+    name: Setup Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      fixture-matrix: ${{ steps.generate.outputs.fixture-matrix }}
+      matrix-length: ${{ steps.generate.outputs.matrix-length }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate matrix indices
+        id: generate
+        run: |
+          LENGTH=$(node -e "console.log(require('./integration-tests/configs/nightly-matrix.json').length)")
+          INDICES=$(node -e "console.log(JSON.stringify([...Array($LENGTH).keys()]))")
+          echo "fixture-matrix={\"index\":$INDICES}" >> $GITHUB_OUTPUT
+          echo "matrix-length=$LENGTH" >> $GITHUB_OUTPUT
+          echo "Matrix has $LENGTH entries"
+
+  # Job 1: Full fixture matrix
+  fixture-tests:
+    name: "Fixture #${{ matrix.index }}"
+    needs: setup-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJson(needs.setup-matrix.outputs.fixture-matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install webapp dependencies
+        working-directory: webapp
+        run: yarn install --frozen-lockfile
+
+      - name: Install integration-tests dependencies
+        working-directory: integration-tests
+        run: npm ci
+
+      - name: Determine fixture app
+        id: fixture
+        working-directory: integration-tests
+        run: |
+          FIXTURE=$(node -e "
+            const m = require('./configs/nightly-matrix.json');
+            console.log(m[${{ matrix.index }}].fixture);
+          ")
+          echo "dir=$FIXTURE" >> $GITHUB_OUTPUT
+          echo "Fixture: $FIXTURE"
+
+      - name: Install fixture app dependencies
+        working-directory: integration-tests/fixtures/${{ steps.fixture.outputs.dir }}
+        run: |
+          if [ "${{ steps.fixture.outputs.dir }}" = "yarn-app" ]; then
+            yarn install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Run integration test
+        working-directory: integration-tests
+        run: |
+          npx ts-node scripts/run-single.ts \
+            --matrix-file configs/nightly-matrix.json \
+            --config-index ${{ matrix.index }} \
+            --fixture-dir fixtures/${{ steps.fixture.outputs.dir }} \
+            --skip-build \
+            --continue-on-error \
+            --verbose
+
+  # Job 2: Community repo tests
+  community-tests:
+    name: "Community: ${{ matrix.repo }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { repo: "expo/examples", index: 0 }
+          - { repo: "callstack/react-native-paper", index: 1 }
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install webapp dependencies
+        working-directory: webapp
+        run: yarn install --frozen-lockfile
+
+      - name: Install integration-tests dependencies
+        working-directory: integration-tests
+        run: npm ci
+
+      - name: Run community test — ${{ matrix.repo }}
+        working-directory: integration-tests
+        run: |
+          npx ts-node scripts/community-runner.ts \
+            --repo-index ${{ matrix.index }} \
+            --verbose
+
+  # Job 3: Summary report
+  report:
+    name: Summary Report
+    runs-on: ubuntu-latest
+    needs: [fixture-tests, community-tests]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## Integration Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Fixture Tests | ${{ needs.fixture-tests.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Community Tests | ${{ needs.community-tests.result }} |" >> $GITHUB_STEP_SUMMARY

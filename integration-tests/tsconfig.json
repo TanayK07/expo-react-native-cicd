@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "commonjs",
+    "lib": ["ES2017"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "declaration": true,
+    "moduleResolution": "node"
+  },
+  "include": ["scripts/**/*.ts", "__tests__/**/*.ts"],
+  "exclude": ["node_modules", "dist", "fixtures"]
+}

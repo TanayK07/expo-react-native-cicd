@@ -1,0 +1,70 @@
+name: Integration Tests (PR)
+
+on:
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "webapp/app/utils/workflowGenerator.ts"
+      - "webapp/app/types.ts"
+      - "integration-tests/**"
+  workflow_dispatch:
+
+jobs:
+  integration-test:
+    name: "${{ matrix.name }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: "npm-no-tests",       index: 0,  fixture: "npm-app"  }
+          - { name: "yarn-no-tests",      index: 1,  fixture: "yarn-app" }
+          - { name: "npm-typescript",      index: 2,  fixture: "npm-app"  }
+          - { name: "yarn-typescript",     index: 3,  fixture: "yarn-app" }
+          - { name: "npm-all-static",      index: 4,  fixture: "npm-app"  }
+          - { name: "yarn-all-static",     index: 5,  fixture: "yarn-app" }
+          - { name: "npm-jest-only",       index: 6,  fixture: "npm-app"  }
+          - { name: "yarn-jest-only",      index: 7,  fixture: "yarn-app" }
+          - { name: "npm-all-tests",       index: 8,  fixture: "npm-app"  }
+          - { name: "yarn-all-tests",      index: 9,  fixture: "yarn-app" }
+          - { name: "npm-no-caching",      index: 10, fixture: "npm-app"  }
+          - { name: "yarn-no-caching",     index: 11, fixture: "yarn-app" }
+          - { name: "npm-eslint-only",     index: 12, fixture: "npm-app"  }
+          - { name: "npm-rntl-hooks",      index: 13, fixture: "npm-app"  }
+          - { name: "yarn-prettier-only",  index: 14, fixture: "yarn-app" }
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install webapp dependencies
+        working-directory: webapp
+        run: yarn install --frozen-lockfile
+
+      - name: Install integration-tests dependencies
+        working-directory: integration-tests
+        run: npm ci
+
+      - name: Install fixture app dependencies (${{ matrix.fixture }})
+        working-directory: integration-tests/fixtures/${{ matrix.fixture }}
+        run: |
+          if [ "${{ matrix.fixture }}" = "yarn-app" ]; then
+            yarn install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Run integration test — ${{ matrix.name }}
+        working-directory: integration-tests
+        run: |
+          npx ts-node scripts/run-single.ts \
+            --matrix-file configs/pr-matrix.json \
+            --config-index ${{ matrix.index }} \
+            --fixture-dir fixtures/${{ matrix.fixture }} \
+            --skip-build \
+            --verbose
