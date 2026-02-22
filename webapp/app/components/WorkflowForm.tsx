@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { WorkflowFormProps } from "../types";
+import { WorkflowFormProps, AdvancedOptions } from "../types";
 import { toast } from "sonner";
 
 const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
@@ -20,7 +20,8 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
       renderHookTests: false,
       caching: true,
       notifications: false,
-    },
+      notificationType: 'both',
+    } as AdvancedOptions,
     showAdvancedOptions: false,
   });
 
