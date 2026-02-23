@@ -24,6 +24,9 @@ jobs:
           - { name: "npm-eas-development",     index: 3, fixture: "npm-app"  }
           - { name: "npm-eas-production-apk",  index: 4, fixture: "npm-app"  }
           - { name: "npm-eas-production",      index: 5, fixture: "npm-app"  }
+          - { name: "pnpm-eas-development",    index: 6, fixture: "pnpm-app" }
+          - { name: "pnpm-eas-production-apk", index: 7, fixture: "pnpm-app" }
+          - { name: "pnpm-eas-production",     index: 8, fixture: "pnpm-app" }
 
     steps:
       - name: Checkout repository
@@ -47,6 +50,9 @@ jobs:
         run: |
           if [ "${{ matrix.fixture }}" = "yarn-app" ]; then
             yarn install --frozen-lockfile
+          elif [ "${{ matrix.fixture }}" = "pnpm-app" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
           else
             npm ci
           fi

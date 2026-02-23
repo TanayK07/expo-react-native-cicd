@@ -196,6 +196,45 @@ describe("command-extractor", () => {
       expect(hooksCmd?.command).toBe("npm run test:hooks");
     });
 
+    it("uses pnpm commands for pnpm package manager", () => {
+      const config = makeConfig({
+        packageManager: "pnpm",
+        tests: ["typescript", "eslint", "prettier"],
+        advancedOptions: {
+          iOSSupport: false,
+          publishToExpo: false,
+          publishToStores: false,
+          jestTests: true,
+          rntlTests: true,
+          renderHookTests: true,
+          caching: true,
+          notifications: false,
+        },
+      });
+      const commands = extractTestJobCommands(config);
+
+      const installCmd = commands.find((c) => c.category === "install");
+      expect(installCmd?.command).toBe("pnpm install");
+
+      const typecheckCmd = commands.find((c) => c.category === "typecheck");
+      expect(typecheckCmd?.command).toBe("pnpm tsc");
+
+      const lintCmd = commands.find((c) => c.category === "lint");
+      expect(lintCmd?.command).toBe("pnpm lint");
+
+      const formatCmd = commands.find((c) => c.category === "format");
+      expect(formatCmd?.command).toBe("pnpm format:check");
+
+      const jestCmd = commands.find((c) => c.category === "jest");
+      expect(jestCmd?.command).toBe("pnpm test");
+
+      const rntlCmd = commands.find((c) => c.category === "rntl");
+      expect(rntlCmd?.command).toBe("pnpm test:rntl");
+
+      const hooksCmd = commands.find((c) => c.category === "hooks");
+      expect(hooksCmd?.command).toBe("pnpm test:hooks");
+    });
+
     it("skips cache-dir when caching is disabled", () => {
       const config = makeConfig({
         tests: ["typescript"],

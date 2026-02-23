@@ -11,7 +11,7 @@ const {
 export interface FormValues {
   projectName?: string;
   expoVersion?: string;
-  packageManager?: "yarn" | "npm";
+  packageManager?: "yarn" | "npm" | "pnpm";
   storageType?: string;
   platform?: string;
   buildType?: string;
@@ -90,7 +90,7 @@ function categorizeCommand(
 
   if (
     nameLower.includes("install dependencies") ||
-    /^(yarn install|npm install)$/m.test(command.trim())
+    /^(yarn install|npm install|pnpm install)$/m.test(command.trim())
   ) {
     return "install";
   }
@@ -142,7 +142,8 @@ function categorizeCommand(
   if (
     nameLower.includes("cache directory") ||
     lower.includes("cache dir") ||
-    lower.includes("npm config get cache")
+    lower.includes("npm config get cache") ||
+    lower.includes("pnpm store path")
   ) {
     return "cache-dir";
   }
@@ -150,7 +151,8 @@ function categorizeCommand(
   if (
     lower.includes("eas-cli") ||
     lower.includes("yarn global add eas") ||
-    lower.includes("npm install -g eas")
+    lower.includes("npm install -g eas") ||
+    lower.includes("pnpm add -g eas")
   ) {
     return "eas-install";
   }

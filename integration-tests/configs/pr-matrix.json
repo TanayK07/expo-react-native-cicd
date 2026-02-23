@@ -403,5 +403,143 @@
       }
     },
     "fixture": "yarn-app"
+  },
+  {
+    "name": "pnpm-no-tests",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-only",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-all-static",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-all-tests",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-no-caching",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
   }
 ]

@@ -6931,5 +6931,3459 @@
       }
     },
     "fixture": "npm-app"
+  },
+  {
+    "name": "pnpm-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-prettier-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-prettier-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-eslint-prettier-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": false,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": false,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-rntl",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-rntl-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": false,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-rntl-hooks",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": true,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
+  },
+  {
+    "name": "pnpm-typescript-eslint-prettier-jest-rntl-hooks-nocache",
+    "config": {
+      "storageType": "github-release",
+      "buildTypes": [
+        "dev"
+      ],
+      "tests": [
+        "typescript",
+        "eslint",
+        "prettier"
+      ],
+      "triggers": [
+        "push-main"
+      ],
+      "packageManager": "pnpm",
+      "advancedOptions": {
+        "iOSSupport": false,
+        "publishToExpo": false,
+        "publishToStores": false,
+        "jestTests": true,
+        "rntlTests": true,
+        "renderHookTests": true,
+        "caching": false,
+        "notifications": false
+      }
+    },
+    "fixture": "pnpm-app"
   }
 ]

@@ -5,18 +5,43 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
   // Package manager helpers
   const pkgMgr = values.packageManager || "yarn";
-  const lockfile = pkgMgr === "yarn" ? "yarn.lock" : "package-lock.json";
-  const installCmd = pkgMgr === "yarn" ? "yarn install" : "npm install";
-  const globalInstallEas =
-    pkgMgr === "yarn"
-      ? "yarn global add eas-cli@latest"
-      : "npm install -g eas-cli@latest";
-  const cacheStepId =
-    pkgMgr === "yarn" ? "yarn-cache-dir-path" : "npm-cache-dir-path";
-  const cacheGetCmd =
-    pkgMgr === "yarn" ? "yarn cache dir" : "npm config get cache";
+
+  const PM_CONFIG = {
+    yarn: {
+      lockfile: "yarn.lock",
+      installCmd: "yarn install",
+      globalInstallEas: "yarn global add eas-cli@latest",
+      cacheStepId: "yarn-cache-dir-path",
+      cacheGetCmd: "yarn cache dir",
+      tsc: "yarn tsc",
+    },
+    npm: {
+      lockfile: "package-lock.json",
+      installCmd: "npm install",
+      globalInstallEas: "npm install -g eas-cli@latest",
+      cacheStepId: "npm-cache-dir-path",
+      cacheGetCmd: "npm config get cache",
+      tsc: "npx tsc",
+    },
+    pnpm: {
+      lockfile: "pnpm-lock.yaml",
+      installCmd: "pnpm install",
+      globalInstallEas: "pnpm add -g eas-cli@latest",
+      cacheStepId: "pnpm-cache-dir-path",
+      cacheGetCmd: "pnpm store path",
+      tsc: "pnpm tsc",
+    },
+  } as const;
+
+  const pm = PM_CONFIG[pkgMgr];
+  const lockfile = pm.lockfile;
+  const installCmd = pm.installCmd;
+  const globalInstallEas = pm.globalInstallEas;
+  const cacheStepId = pm.cacheStepId;
+  const cacheGetCmd = pm.cacheGetCmd;
   const run = (script: string) => {
     if (pkgMgr === "yarn") return `yarn ${script}`;
+    if (pkgMgr === "pnpm") return `pnpm ${script}`;
     if (script === "test") return "npm test";
     return `npm run ${script}`;
   };
@@ -151,7 +176,7 @@ export const generateWorkflowYaml = (values: FormValues): string => {
     yaml += `      - name: 📦 Install dependencies\n        run: ${installCmd}\n\n`;
 
     if (tests.includes("typescript")) {
-      yaml += `      - name: 🧪 Run TypeScript check\n        run: ${pkgMgr === "yarn" ? "yarn tsc" : "npx tsc"}\n\n`;
+      yaml += `      - name: 🧪 Run TypeScript check\n        run: ${pm.tsc}\n\n`;
     }
 
     if (tests.includes("eslint")) {
