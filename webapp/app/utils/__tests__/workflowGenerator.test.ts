@@ -867,4 +867,49 @@ describe("generateWorkflowYaml — snapshots", () => {
     });
     expect(yaml).toMatchSnapshot();
   });
+
+  it.each([true, false])(
+    "should not include non-functional EAS build local cache step (caching=%s)",
+    (caching) => {
+      const yaml = generateWorkflowYaml({
+        storageType: "github-releases",
+        buildTypes: ["dev"],
+        tests: ["typescript"],
+        triggers: ["push"],
+        advancedOptions: {
+          iOSSupport: false,
+          publishToExpo: false,
+          publishToStores: false,
+          jestTests: false,
+          rntlTests: false,
+          renderHookTests: false,
+          caching,
+          notifications: false,
+        },
+      });
+      expect(yaml).not.toContain(".eas-build-local");
+      expect(yaml).not.toContain("Setup EAS build cache");
+    },
+  );
+
+  it("should not include EAS build local cache with iOS and all build types", () => {
+    const yaml = generateWorkflowYaml({
+      storageType: "google-drive",
+      buildTypes: ["dev", "prod-apk", "prod-aab"],
+      tests: ["typescript", "eslint"],
+      triggers: ["push", "pull_request", "manual"],
+      advancedOptions: {
+        iOSSupport: true,
+        publishToExpo: false,
+        publishToStores: false,
+        jestTests: false,
+        rntlTests: false,
+        renderHookTests: false,
+        caching: true,
+        notifications: true,
+      },
+    });
+    expect(yaml).not.toContain(".eas-build-local");
+    expect(yaml).not.toContain("Setup EAS build cache");
+  });
 });

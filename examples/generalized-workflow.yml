@@ -89,14 +89,6 @@ jobs:
           yarn install
           yarn global add eas-cli@latest
 
-      - name: 📱 Setup EAS build cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.eas-build-local
-          key: ${{ runner.os }}-eas-build-local-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-eas-build-local-
-
       - name: 🔄 Verify EAS CLI installation
         run: |
           echo "EAS CLI version:"

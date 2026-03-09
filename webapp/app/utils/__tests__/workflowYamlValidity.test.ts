@@ -1183,15 +1183,6 @@ describe("Required build steps always present regardless of config", () => {
         ),
     },
     {
-      description: "EAS build cache step (actions/cache@v3)",
-      check: (steps) =>
-        steps.some(
-          (s) =>
-            s.uses?.includes("actions/cache") &&
-            (s.with?.path as string)?.includes(".eas-build-local"),
-        ),
-    },
-    {
       description: "Fix package.json main entry step",
       check: (steps) =>
         steps.some((s) => s.run?.includes("node_modules/expo/AppEntry.js")),
