@@ -9,6 +9,8 @@ export interface AdvancedOptions {
   caching: boolean;
   notifications: boolean;
   notificationType?: "slack" | "discord" | "both";
+  runnerType?: "github-hosted" | "self-hosted";
+  selfHostedLabels?: string;
 }
 
 export interface FormValues {

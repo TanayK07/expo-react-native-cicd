@@ -22,6 +22,8 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
       caching: true,
       notifications: false,
       notificationType: "both",
+      runnerType: "github-hosted",
+      selfHostedLabels: "",
     } as AdvancedOptions,
     showAdvancedOptions: false,
   });
@@ -629,6 +631,84 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
                 secrets
               </p>
             )}
+          </div>
+
+          {/* Runner Type */}
+          <div className="space-y-2">
+            <label className="block font-medium text-gray-700 dark:text-gray-300">
+              Runner Type:
+            </label>
+            <div className="space-y-2">
+              <select
+                id="runner-type"
+                name="runner-type"
+                value={formState.advancedOptions.runnerType || "github-hosted"}
+                onChange={(e) => {
+                  const value = e.target.value as
+                    | "github-hosted"
+                    | "self-hosted";
+                  setFormState((prev) => ({
+                    ...prev,
+                    advancedOptions: {
+                      ...prev.advancedOptions,
+                      runnerType: value,
+                      selfHostedLabels:
+                        value === "github-hosted"
+                          ? ""
+                          : prev.advancedOptions.selfHostedLabels,
+                    },
+                  }));
+                }}
+                className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500"
+              >
+                <option value="github-hosted">
+                  GitHub-Hosted Runners (ubuntu-latest / macos-latest)
+                </option>
+                <option value="self-hosted">Self-Hosted Runner</option>
+              </select>
+              {formState.advancedOptions.runnerType === "self-hosted" && (
+                <div className="ml-2 space-y-2">
+                  <label
+                    htmlFor="self-hosted-labels"
+                    className="block text-sm text-gray-700 dark:text-gray-300"
+                  >
+                    Runner label(s):
+                  </label>
+                  <input
+                    type="text"
+                    id="self-hosted-labels"
+                    name="self-hosted-labels"
+                    value={formState.advancedOptions.selfHostedLabels || ""}
+                    onChange={(e) => {
+                      setFormState((prev) => ({
+                        ...prev,
+                        advancedOptions: {
+                          ...prev.advancedOptions,
+                          selfHostedLabels: e.target.value,
+                        },
+                      }));
+                    }}
+                    placeholder="self-hosted"
+                    className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                  />
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Enter your runner label (e.g.{" "}
+                    <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+                      self-hosted
+                    </code>
+                    ,{" "}
+                    <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+                      macos-arm64
+                    </code>
+                    ). Leave blank to use{" "}
+                    <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">
+                      self-hosted
+                    </code>
+                    .
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Publishing */}

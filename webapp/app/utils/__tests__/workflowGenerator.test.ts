@@ -812,7 +812,95 @@ describe("generateWorkflowYaml — package manager selection", () => {
   });
 });
 
-// ─── 10. Snapshot Tests ───────────────────────────────────────────────────────
+// ─── 10. Self-Hosted Runner ────────────────────────────────────────────────────
+
+describe("generateWorkflowYaml — self-hosted runner", () => {
+  it("uses self-hosted label when runnerType is self-hosted", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          runnerType: "self-hosted",
+        },
+      }),
+    );
+    expect(yaml).toContain("runs-on: self-hosted");
+    expect(yaml).not.toContain("runs-on: ubuntu-latest");
+  });
+
+  it("uses custom label when selfHostedLabels is provided", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          runnerType: "self-hosted",
+          selfHostedLabels: "macos-arm64",
+        },
+      }),
+    );
+    expect(yaml).toContain("runs-on: macos-arm64");
+    expect(yaml).not.toContain("runs-on: ubuntu-latest");
+  });
+
+  it("uses custom label in matrix strategy for iOS + self-hosted", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          runnerType: "self-hosted",
+          selfHostedLabels: "macos-arm64",
+          iOSSupport: true,
+        },
+      }),
+    );
+    expect(yaml).toContain("runs-on: macos-arm64");
+    expect(yaml).not.toContain("ubuntu-latest");
+    expect(yaml).not.toContain("macos-latest");
+  });
+
+  it("uses ubuntu-latest when runnerType is github-hosted (default)", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          runnerType: "github-hosted",
+        },
+      }),
+    );
+    expect(yaml).toContain("runs-on: ubuntu-latest");
+  });
+
+  it("uses ubuntu-latest when runnerType is undefined", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        advancedOptions: { ...defaultAdvancedOptions },
+      }),
+    );
+    expect(yaml).toContain("runs-on: ubuntu-latest");
+  });
+
+  it("applies self-hosted to check-skip, test, and build jobs", () => {
+    const yaml = generateWorkflowYaml(
+      makeForm({
+        tests: ["typescript"],
+        advancedOptions: {
+          ...defaultAdvancedOptions,
+          runnerType: "self-hosted",
+        },
+      }),
+    );
+    const runsOnLines = yaml
+      .split("\n")
+      .filter((line) => line.includes("runs-on:"));
+    // check-skip, test, and build jobs should all use self-hosted
+    expect(runsOnLines.length).toBeGreaterThanOrEqual(3);
+    runsOnLines.forEach((line) => {
+      expect(line).toContain("self-hosted");
+    });
+  });
+});
+
+// ─── 11. Snapshot Tests ───────────────────────────────────────────────────────
 
 describe("generateWorkflowYaml — snapshots", () => {
   it("matches snapshot for minimal config (push-main, dev APK, github-release)", () => {
