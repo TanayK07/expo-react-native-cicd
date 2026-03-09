@@ -58,6 +58,14 @@ export const generateWorkflowYaml = (values: FormValues): string => {
     notifications: false,
   };
 
+  // Runner configuration
+  const isSelfHosted = options.runnerType === "self-hosted";
+  const selfHostedLabel = options.selfHostedLabels
+    ? options.selfHostedLabels
+    : "self-hosted";
+  const defaultRunner = isSelfHosted ? selfHostedLabel : "ubuntu-latest";
+  const macRunner = isSelfHosted ? selfHostedLabel : "macos-latest";
+
   let yaml = `name: React Native CI/CD\n\non:\n`;
 
   // Add triggers
@@ -155,7 +163,7 @@ export const generateWorkflowYaml = (values: FormValues): string => {
   yaml += `\njobs:\n`;
 
   // Skip CI check
-  yaml += `  check-skip:\n    runs-on: ubuntu-latest\n    if: "!contains(github.event.head_commit.message, '[skip ci]')"\n    steps:\n      - name: Skip CI check\n        run: echo "Proceeding with workflow"\n\n`;
+  yaml += `  check-skip:\n    runs-on: ${defaultRunner}\n    if: "!contains(github.event.head_commit.message, '[skip ci]')"\n    steps:\n      - name: Skip CI check\n        run: echo "Proceeding with workflow"\n\n`;
 
   // Add test job if any tests are selected
   if (
@@ -164,7 +172,7 @@ export const generateWorkflowYaml = (values: FormValues): string => {
     options.rntlTests ||
     options.renderHookTests
   ) {
-    yaml += `  test:\n    needs: check-skip\n    runs-on: ubuntu-latest\n    steps:\n      - name: 🏗 Checkout repository\n        uses: actions/checkout@v4\n\n`;
+    yaml += `  test:\n    needs: check-skip\n    runs-on: ${defaultRunner}\n    steps:\n      - name: 🏗 Checkout repository\n        uses: actions/checkout@v4\n\n`;
     yaml += `      - name: 🏗 Setup Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: "20"\n          cache: "${pkgMgr}"\n\n`;
 
     // Add caching if enabled
@@ -235,10 +243,10 @@ export const generateWorkflowYaml = (values: FormValues): string => {
   // Add matrix strategy if iOS is enabled
   if (options.iOSSupport) {
     yaml += `    strategy:\n      matrix:\n        platform: [android]\n`;
-    yaml += `        include:\n          - platform: ios\n            runs-on: macos-latest\n`;
-    yaml += `    runs-on: \${{ matrix.platform == 'ios' && 'macos-latest' || 'ubuntu-latest' }}\n`;
+    yaml += `        include:\n          - platform: ios\n            runs-on: ${macRunner}\n`;
+    yaml += `    runs-on: \${{ matrix.platform == 'ios' && '${macRunner}' || '${defaultRunner}' }}\n`;
   } else {
-    yaml += `    runs-on: ubuntu-latest\n`;
+    yaml += `    runs-on: ${defaultRunner}\n`;
   }
 
   yaml += `    steps:\n`;
