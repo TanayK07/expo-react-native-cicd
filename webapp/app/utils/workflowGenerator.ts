@@ -261,7 +261,6 @@ export const generateWorkflowYaml = (values: FormValues): string => {
 
   yaml += `      - name: 📦 Install dependencies\n        run: |\n          ${installCmd}\n          ${globalInstallEas}\n\n`;
 
-  yaml += `      - name: 📱 Setup EAS build cache\n        uses: actions/cache@v3\n        with:\n          path: ~/.eas-build-local\n          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}\n          restore-keys: |\n            \${{ runner.os }}-eas-build-local-\n\n`;
   yaml += `      - name: 🔄 Verify EAS CLI installation\n        run: |\n          echo "EAS CLI version:"\n          eas --version\n\n`;
 
   yaml += `      - name: 📋 Fix package.json main entry\n        run: |\n          # Check if jq is installed, if not install it\n          if ! command -v jq &> /dev/null; then\n            echo "Installing jq..."\n            sudo apt-get update && sudo apt-get install -y jq\n          fi\n\n          # Fix the main entry in package.json\n          if [ -f ./package.json ]; then\n            # Create a backup\n            cp package.json package.json.bak\n            # Update the package.json\n            jq '.main = "node_modules/expo/AppEntry.js"' package.json > package.json.tmp && mv package.json.tmp package.json\n            echo "Updated package.json main entry"\n            cat package.json | grep "main"\n          else\n            echo "package.json not found"\n            exit 1\n          fi\n\n`;

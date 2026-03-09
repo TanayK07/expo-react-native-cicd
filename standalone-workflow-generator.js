@@ -220,7 +220,6 @@ function generateWorkflowYaml(values) {
 
 	yaml += `      - name: 📦 Install dependencies\n        run: |\n          yarn install\n          yarn global add eas-cli@latest\n\n`;
 
-	yaml += `      - name: 📱 Setup EAS build cache\n        uses: actions/cache@v3\n        with:\n          path: ~/.eas-build-local\n          key: \${{ runner.os }}-eas-build-local-\${{ hashFiles('**/package.json') }}\n          restore-keys: |\n            \${{ runner.os }}-eas-build-local-\n\n`;
 	yaml += `      - name: 🔄 Verify EAS CLI installation\n        run: |\n          echo "EAS CLI version:"\n          eas --version\n\n`;
 
 	// Add build steps based on selected build types and platforms

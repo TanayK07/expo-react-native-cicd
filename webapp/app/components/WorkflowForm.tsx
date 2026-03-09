@@ -851,7 +851,7 @@ const WorkflowForm: React.FC<WorkflowFormProps> = ({ onSubmit }) => {
                   htmlFor="caching"
                   className="ml-2 text-gray-700 dark:text-gray-300"
                 >
-                  Enable Build Caching
+                  Enable Dependency Caching
                 </label>
               </div>
               <div className="flex items-center">

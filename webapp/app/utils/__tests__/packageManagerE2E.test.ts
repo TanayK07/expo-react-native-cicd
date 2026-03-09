@@ -160,7 +160,6 @@ describe("Issue #14 & #12: npm users no longer get yarn.lock errors", () => {
     for (const job of Object.values(wf.jobs)) {
       for (const step of job.steps) {
         if (step.with?.key && typeof step.with.key === "string") {
-          // Only check package manager cache steps (skip EAS build cache)
           if (
             step.with.key.includes("hashFiles") &&
             step.name?.includes("Setup npm cache")
@@ -1026,12 +1025,9 @@ describe("caching disabled: no cache steps regardless of package manager", () =>
       const wf = parse(yamlStr);
       const allSteps = Object.values(wf.jobs).flatMap((j) => j.steps);
 
-      const cacheSteps = allSteps.filter(
-        (s) =>
-          s.uses?.includes("actions/cache") &&
-          !s.with?.path?.toString().includes(".eas-build-local"),
+      const cacheSteps = allSteps.filter((s) =>
+        s.uses?.includes("actions/cache"),
       );
-      // Should have no package manager cache steps (EAS cache is separate and OK)
       const pkgCacheSteps = cacheSteps.filter(
         (s) =>
           s.name?.includes("Setup yarn cache") ||
