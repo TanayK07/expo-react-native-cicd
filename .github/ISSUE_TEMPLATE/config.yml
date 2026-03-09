@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/TanayK07/expo-react-native-cicd/discussions
+    about: Ask questions and share ideas in GitHub Discussions
+  - name: Workflow Generator
+    url: https://expobuilder.vercel.app
+    about: Use the interactive workflow generator

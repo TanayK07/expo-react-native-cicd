@@ -80,8 +80,8 @@ That's it! Your next push to the main branch will trigger automatic builds.
 ## 🎥 Demo & Examples
 
 ### Live Examples
-- [Sample React Native App with CI/CD](link-to-example-repo)
-- [Expo TypeScript Template](link-to-expo-example)
+- [Example Generated Workflows](examples/) — Sample workflow files for different configurations
+- [Interactive Workflow Generator](https://expobuilder.vercel.app) — Build your own custom workflow
 
 ### Build Output Examples
 ```
