@@ -38,8 +38,9 @@ The generated workflows use Expo's own EAS CLI with the `--local` flag, so you g
 
 The project is fully open source (MIT), has 636 stars, and is available on the GitHub Marketplace.
 
+**Demo video** (full setup in under 5 minutes): https://github.com/user-attachments/assets/bd1dd6dc-04b6-4b22-91c3-13721b2220e0
+
 - GitHub: https://github.com/TanayK07/expo-react-native-cicd
 - Generator: https://expobuilder.vercel.app
-- Demo video (5 min setup): https://github.com/user-attachments/assets/bd1dd6dc-04b6-4b22-91c3-13721b2220e0
 
 I'd love feedback from anyone who's dealt with similar build cost issues. What would make this more useful for your workflow?

@@ -38,6 +38,12 @@ That's 200+ lines of YAML, and one wrong indent breaks everything.
 
 So I built a generator that does it all through a web interface. Point, click, copy, paste. Five minutes to set up, then forget about it.
 
+## See it in action
+
+Here's the full setup in under 5 minutes:
+
+https://github.com/user-attachments/assets/bd1dd6dc-04b6-4b22-91c3-13721b2220e0
+
 ## How it works
 
 The [Interactive Workflow Generator](https://expobuilder.vercel.app) walks you through the configuration:
