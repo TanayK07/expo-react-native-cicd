@@ -158,9 +158,10 @@ async function main() {
     // Clone the repo
     if (!fs.existsSync(repoDir)) {
       console.log(`Cloning ${repo.repo}...`);
+      const branchFlag = repo.sha && repo.sha !== "default" ? `--branch ${repo.sha}` : "";
       execSync(
-        `git clone --depth 1 --branch ${repo.sha} https://github.com/${repo.repo}.git ${repoDir}`,
-        { stdio: "pipe", timeout: 120_000 }
+        `git clone --depth 1 ${branchFlag} https://github.com/${repo.repo}.git ${repoDir}`,
+        { stdio: "pipe", timeout: 300_000 }
       );
     }
 
