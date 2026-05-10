@@ -10,6 +10,8 @@ export interface MatrixEntry {
   fixture: "yarn-app" | "npm-app" | "pnpm-app";
 }
 
+export const GITHUB_MATRIX_LIMIT = 256;
+
 /**
  * Build a base FormValues config with defaults.
  */
@@ -434,6 +436,17 @@ export function generateEasMatrix(): MatrixEntry[] {
   return entries;
 }
 
+/**
+ * Split an array into chunks of at most `size` elements.
+ */
+function chunk<T>(arr: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
 // CLI entry point
 if (require.main === module) {
   const { Command } = require("commander");
@@ -458,27 +471,53 @@ if (require.main === module) {
   }
 
   let matrix: MatrixEntry[];
-  let filename: string;
+  let filenameBase: string;
 
   switch (opts.mode) {
     case "pr":
       matrix = generatePrMatrix();
-      filename = "pr-matrix.json";
+      filenameBase = "pr-matrix";
       break;
     case "nightly":
       matrix = generateNightlyMatrix();
-      filename = "nightly-matrix.json";
+      filenameBase = "nightly-matrix";
       break;
     case "eas":
       matrix = generateEasMatrix();
-      filename = "eas-matrix.json";
+      filenameBase = "eas-matrix";
       break;
     default:
       console.error(`Unknown mode: ${opts.mode}`);
       process.exit(1);
   }
 
-  const outPath = path.join(outputDir, filename);
-  fs.writeFileSync(outPath, JSON.stringify(matrix, null, 2));
-  console.log(`Generated ${matrix.length} entries → ${outPath}`);
+  if (matrix.length <= GITHUB_MATRIX_LIMIT) {
+    const outPath = path.join(outputDir, `${filenameBase}.json`);
+    fs.writeFileSync(outPath, JSON.stringify(matrix, null, 2));
+    console.log(`Generated ${matrix.length} entries → ${outPath}`);
+  } else {
+    const chunks = chunk(matrix, GITHUB_MATRIX_LIMIT);
+    for (let i = 0; i < chunks.length; i++) {
+      const outPath = path.join(outputDir, `${filenameBase}-chunk${i}.json`);
+      fs.writeFileSync(outPath, JSON.stringify(chunks[i], null, 2));
+      console.log(
+        `Generated chunk ${i}: ${chunks[i].length} entries → ${outPath}`
+      );
+    }
+    // Write a manifest so the workflow knows how many chunks exist
+    const manifest = {
+      totalEntries: matrix.length,
+      chunkCount: chunks.length,
+      chunkSize: GITHUB_MATRIX_LIMIT,
+      chunks: chunks.map((c, i) => ({
+        file: `${filenameBase}-chunk${i}.json`,
+        count: c.length,
+      })),
+    };
+    const manifestPath = path.join(outputDir, `${filenameBase}-manifest.json`);
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    console.log(
+      `Generated manifest: ${chunks.length} chunks, ${matrix.length} total → ${manifestPath}`
+    );
+  }
 }

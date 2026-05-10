@@ -1,0 +1,15 @@
+{
+  "totalEntries": 379,
+  "chunkCount": 2,
+  "chunkSize": 256,
+  "chunks": [
+    {
+      "file": "nightly-matrix-chunk0.json",
+      "count": 256
+    },
+    {
+      "file": "nightly-matrix-chunk1.json",
+      "count": 123
+    }
+  ]
+}
