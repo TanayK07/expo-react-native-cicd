@@ -3,6 +3,7 @@ import {
   generateNightlyMatrix,
   generateEasMatrix,
   MatrixEntry,
+  GITHUB_MATRIX_LIMIT,
 } from "../scripts/matrix-generator";
 
 describe("matrix-generator", () => {
@@ -156,6 +157,15 @@ describe("matrix-generator", () => {
         } else {
           expect(entry.fixture).toBe("yarn-app");
         }
+      }
+    });
+
+    it("each chunk stays within GitHub Actions matrix limit", () => {
+      const chunkCount = Math.ceil(matrix.length / GITHUB_MATRIX_LIMIT);
+      for (let i = 0; i < chunkCount; i++) {
+        const start = i * GITHUB_MATRIX_LIMIT;
+        const chunk = matrix.slice(start, start + GITHUB_MATRIX_LIMIT);
+        expect(chunk.length).toBeLessThanOrEqual(GITHUB_MATRIX_LIMIT);
       }
     });
   });
